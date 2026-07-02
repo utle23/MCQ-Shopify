@@ -67,16 +67,18 @@ Create the collections as **Automated collections** so LS Retail keeps them
 filled (e.g. condition *Product type = Fresh Produce*, or *Tag contains
 special*). Nothing about price/stock is typed by hand.
 
-### d) Add the two videos
-Your two downloaded clips are in the local folder **`_videos-to-upload/`**
-(`mcq-video-1.mp4`, `mcq-video-2.mp4`). Shopify does **not** allow video files
-in a theme’s `assets/` folder, so:
+### d) The two videos (already working)
+Both clips ship **inside the theme** as `assets/mcq-video-1.mp4` and
+`assets/mcq-video-2.mp4`, and the Video band is pre-set to use them — they
+**autoplay muted and loop** on the homepage, no setup needed.
 
-1. Upload both to `Content → Files` in the Shopify admin.
-2. `Customize → Homepage → Video band` → for **Video 1** and **Video 2** pick
-   the uploaded file under **Shopify-hosted video**.
+To swap a video, `Customize → Homepage → Video band → Video 1/2` and either:
+- change the **theme asset filename** (upload a new `.mp4` to `assets/` first), or
+- pick a **Shopify-hosted video**, or
+- paste a **YouTube / Vimeo URL** (+ optional poster image).
 
-(Alternatively paste a **YouTube / Vimeo URL** + a poster image instead.)
+Render priority per slot: Shopify-hosted video → theme asset `.mp4` →
+external URL → placeholder.
 
 ### e) Wholesale form email
 Form submissions use Shopify’s built-in contact form. Set the recipient at

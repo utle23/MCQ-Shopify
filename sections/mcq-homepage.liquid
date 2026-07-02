@@ -107,15 +107,21 @@
               assign k_vtitle = 'video_title_' | append: i
               assign k_vtext = 'video_text_' | append: i
               assign k_vposter = 'video_poster_' | append: i
+              assign k_vasset = 'video_asset_' | append: i
               assign vid = s[k_vid]
               assign vurl = s[k_vurl]
               assign vtitle = s[k_vtitle]
               assign vtext = s[k_vtext]
               assign vposter = s[k_vposter]
+              assign vasset = s[k_vasset]
             -%}
             <div class="mcq-video" data-mcq-video>
               {%- if vid != blank -%}
                 {{ vid | video_tag: controls: true, preload: 'metadata', image_size: '1100x' }}
+              {%- elsif vasset != blank -%}
+                <video autoplay muted loop playsinline controls preload="metadata"{% if vposter != blank %} poster="{{ vposter | image_url: width: 1100 }}"{% endif %}>
+                  <source src="{{ vasset | asset_url }}" type="video/mp4">
+                </video>
               {%- elsif vurl != blank -%}
                 <img
                   src="{% if vposter != blank %}{{ vposter | image_url: width: 1100 }}{% else %}https://img.youtube.com/vi/{{ vurl.id }}/maxresdefault.jpg{% endif %}"
@@ -518,14 +524,16 @@
     { "type": "textarea", "id": "videos_text", "label": "Text", "default": "Fresh produce every morning and authentic street food, made on site." },
     { "type": "header", "content": "Video 1" },
     { "type": "video", "id": "video_1", "label": "Shopify-hosted video" },
-    { "type": "video_url", "id": "video_url_1", "label": "…or external video URL (YouTube / Vimeo)", "accept": ["youtube", "vimeo"] },
-    { "type": "image_picker", "id": "video_poster_1", "label": "Poster image (for external video)" },
+    { "type": "video_url", "id": "video_url_1", "label": "…or external URL (YouTube / Vimeo)", "accept": ["youtube", "vimeo"] },
+    { "type": "text", "id": "video_asset_1", "label": "…or theme asset filename (.mp4)", "default": "mcq-video-1.mp4", "info": "A file in assets/. Autoplays muted & loops." },
+    { "type": "image_picker", "id": "video_poster_1", "label": "Poster image (optional)" },
     { "type": "text", "id": "video_title_1", "label": "Caption title", "default": "Fresh WA produce, daily" },
     { "type": "text", "id": "video_text_1", "label": "Caption text", "default": "Sourced from local farms every morning." },
     { "type": "header", "content": "Video 2" },
     { "type": "video", "id": "video_2", "label": "Shopify-hosted video" },
-    { "type": "video_url", "id": "video_url_2", "label": "…or external video URL (YouTube / Vimeo)", "accept": ["youtube", "vimeo"] },
-    { "type": "image_picker", "id": "video_poster_2", "label": "Poster image (for external video)" },
+    { "type": "video_url", "id": "video_url_2", "label": "…or external URL (YouTube / Vimeo)", "accept": ["youtube", "vimeo"] },
+    { "type": "text", "id": "video_asset_2", "label": "…or theme asset filename (.mp4)", "default": "mcq-video-2.mp4", "info": "A file in assets/. Autoplays muted & loops." },
+    { "type": "image_picker", "id": "video_poster_2", "label": "Poster image (optional)" },
     { "type": "text", "id": "video_title_2", "label": "Caption title", "default": "Vietnamese street food" },
     { "type": "text", "id": "video_text_2", "label": "Caption text", "default": "Banh mi, pho & more — made in-store." },
 

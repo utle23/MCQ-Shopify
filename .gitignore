@@ -6,9 +6,8 @@
 .DS_Store
 Thumbs.db
 
-# Local video files — upload these to Shopify Content > Files, not to git
+# Local originals only — the working copies live in assets/ and ARE tracked
 _videos-to-upload/
-*.mp4
 
 # Editor
 .vscode/
