@@ -1,0 +1,568 @@
+{%- comment -%}
+  ============================================================
+  MCQ Supermarket — Premium Homepage
+  ------------------------------------------------------------
+  Fully editable in the Shopify theme editor. Product / price /
+  barcode data is NEVER hard-coded — the three product bands
+  (Fresh Produce, International Groceries, Weekly Specials) read
+  live Shopify collections, which LS Retail / LS Central syncs
+  through the Shopify Connector.
+  Repeatable items (stats, categories, rewards, locations) are
+  section blocks so the layout stays premium while content is
+  merchant-editable.
+  ============================================================
+{%- endcomment -%}
+
+{{ 'mcq-custom.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+-%}
+
+<div
+  class="mcq mcq-homepage"
+  style="--mcq-green:{{ s.brand_green }};--mcq-orange:{{ s.brand_orange }};--mcq-purple:{{ s.brand_purple }};"
+>
+
+  {%- comment -%} ---------- HERO ---------- {%- endcomment -%}
+  <section class="mcq-hero">
+    <div class="mcq-hero__media">
+      {%- if s.hero_video != blank -%}
+        {{ s.hero_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto' }}
+      {%- elsif s.hero_image != blank -%}
+        {{ s.hero_image | image_url: width: 2000 | image_tag: loading: 'eager', alt: s.hero_heading }}
+      {%- else -%}
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'mcq-hero__ph' }}
+      {%- endif -%}
+    </div>
+    <div class="mcq-hero__overlay"></div>
+    <div class="mcq-hero__inner mcq-wrap">
+      {%- if s.hero_eyebrow != blank -%}<span class="mcq-tag">{{ s.hero_eyebrow }}</span>{%- endif -%}
+      {%- if s.hero_heading != blank -%}<h1>{{ s.hero_heading }}</h1>{%- endif -%}
+      {%- if s.hero_subheading != blank -%}<p class="mcq-hero__sub">{{ s.hero_subheading }}</p>{%- endif -%}
+      <div class="mcq-btn-row">
+        {%- if s.hero_btn1_label != blank -%}
+          <a href="{{ s.hero_btn1_link | default: '#' }}" class="mcq-btn mcq-btn--orange">{{ s.hero_btn1_label }}</a>
+        {%- endif -%}
+        {%- if s.hero_btn2_label != blank -%}
+          <a href="{{ s.hero_btn2_link | default: '#' }}" class="mcq-btn mcq-btn--outline">{{ s.hero_btn2_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ---------- STATS ---------- {%- endcomment -%}
+  {%- assign stat_blocks = section.blocks | where: 'type', 'stat' -%}
+  {%- if stat_blocks.size > 0 -%}
+    <div class="mcq-stats">
+      <div class="mcq-wrap mcq-stats__grid">
+        {%- for block in stat_blocks -%}
+          <div class="mcq-stat" {{ block.shopify_attributes }}>
+            <b>{{ block.settings.value }}</b>
+            <span>{{ block.settings.label }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ---------- DUAL VIDEO BAND ---------- {%- endcomment -%}
+  {%- if s.show_videos -%}
+    <section class="mcq-section mcq-section--tight">
+      <div class="mcq-wrap">
+        {%- if s.videos_heading != blank -%}
+          <div class="mcq-head">
+            <span class="mcq-tag">{{ s.videos_eyebrow }}</span>
+            <h2>{{ s.videos_heading }}</h2>
+            {%- if s.videos_text != blank -%}<p>{{ s.videos_text }}</p>{%- endif -%}
+          </div>
+        {%- endif -%}
+        <div class="mcq-videos">
+          {%- for i in (1..2) -%}
+            {%- liquid
+              assign k_vid = 'video_' | append: i
+              assign k_vurl = 'video_url_' | append: i
+              assign k_vtitle = 'video_title_' | append: i
+              assign k_vtext = 'video_text_' | append: i
+              assign k_vposter = 'video_poster_' | append: i
+              assign vid = s[k_vid]
+              assign vurl = s[k_vurl]
+              assign vtitle = s[k_vtitle]
+              assign vtext = s[k_vtext]
+              assign vposter = s[k_vposter]
+            -%}
+            <div class="mcq-video" data-mcq-video>
+              {%- if vid != blank -%}
+                {{ vid | video_tag: controls: true, preload: 'metadata', image_size: '1100x' }}
+              {%- elsif vurl != blank -%}
+                <img
+                  src="{% if vposter != blank %}{{ vposter | image_url: width: 1100 }}{% else %}https://img.youtube.com/vi/{{ vurl.id }}/maxresdefault.jpg{% endif %}"
+                  alt="{{ vtitle | escape }}"
+                  loading="lazy"
+                >
+                <button
+                  type="button"
+                  class="mcq-video__play"
+                  aria-label="Play video"
+                  data-mcq-play
+                  data-type="{{ vurl.type }}"
+                  data-id="{{ vurl.id }}"
+                ></button>
+              {%- else -%}
+                {{ 'lifestyle-2' | placeholder_svg_tag: 'mcq-video__ph' }}
+                <button type="button" class="mcq-video__play" aria-label="Play video" disabled></button>
+              {%- endif -%}
+              {%- if vtitle != blank -%}
+                <div class="mcq-video__caption">
+                  <h3>{{ vtitle }}</h3>
+                  {%- if vtext != blank -%}<p>{{ vtext }}</p>{%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- FEATURED CATEGORIES ---------- {%- endcomment -%}
+  {%- assign cat_blocks = section.blocks | where: 'type', 'category' -%}
+  {%- if cat_blocks.size > 0 -%}
+    <section class="mcq-section mcq-section--alt">
+      <div class="mcq-wrap">
+        <div class="mcq-head">
+          <span class="mcq-tag">{{ s.cat_eyebrow }}</span>
+          <h2>{{ s.cat_heading }}</h2>
+          {%- if s.cat_text != blank -%}<p>{{ s.cat_text }}</p>{%- endif -%}
+        </div>
+        <div class="mcq-cat-grid">
+          {%- for block in cat_blocks -%}
+            {%- liquid
+              assign cb = block.settings
+              assign col = cb.collection
+              assign clabel = cb.title
+              if clabel == blank and col != blank
+                assign clabel = col.title
+              endif
+              assign clink = cb.link
+              if clink == blank and col != blank
+                assign clink = col.url
+              endif
+              assign cimg = cb.image
+              if cimg == blank and col != blank
+                assign cimg = col.featured_image
+              endif
+            -%}
+            <a class="mcq-cat" href="{{ clink | default: '#' }}" {{ block.shopify_attributes }}>
+              {%- if cimg != blank -%}
+                {{ cimg | image_url: width: 600 | image_tag: loading: 'lazy', alt: clabel }}
+              {%- else -%}
+                <span class="mcq-cat__placeholder">{{ cb.emoji | default: '🛒' }}</span>
+              {%- endif -%}
+              <span class="mcq-cat__label">{{ clabel | default: 'Category' }}</span>
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- PRODUCT BANDS (dynamic collections) ---------- {%- endcomment -%}
+  {%- for band in (1..3) -%}
+    {%- liquid
+      assign key = ''
+      case band
+        when 1
+          assign key = 'fresh'
+        when 2
+          assign key = 'intl'
+        when 3
+          assign key = 'specials'
+      endcase
+      assign k_col = key | append: '_collection'
+      assign k_head = key | append: '_heading'
+      assign k_eye = key | append: '_eyebrow'
+      assign k_text = key | append: '_text'
+      assign k_count = key | append: '_count'
+      assign col = s[k_col]
+      assign heading = s[k_head]
+      assign eyebrow = s[k_eye]
+      assign subtext = s[k_text]
+      assign count = s[k_count] | default: 4
+      assign is_alt = false
+      if band == 2
+        assign is_alt = true
+      endif
+    -%}
+    {%- if heading != blank -%}
+      <section class="mcq-section{% if is_alt %} mcq-section--alt{% endif %}">
+        <div class="mcq-wrap">
+          <div class="mcq-head">
+            {%- if eyebrow != blank -%}<span class="mcq-tag"{% if band == 3 %} style="background:#FFE2E9;color:#c2185b;"{% endif %}>{{ eyebrow }}</span>{%- endif -%}
+            <h2>{{ heading }}</h2>
+            {%- if subtext != blank -%}<p>{{ subtext }}</p>{%- endif -%}
+          </div>
+
+          {%- if col != blank and col.products.size > 0 -%}
+            <div class="mcq-prod-grid">
+              {%- for product in col.products limit: count -%}
+                <a class="mcq-card" href="{{ product.url }}">
+                  <div class="mcq-card__media">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="mcq-card__badge mcq-card__badge--sale">Special</span>
+                    {%- endif -%}
+                    {%- if product.featured_image -%}
+                      {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: product.title }}
+                    {%- else -%}
+                      <span class="mcq-card__ph">🛒</span>
+                    {%- endif -%}
+                  </div>
+                  <div class="mcq-card__body">
+                    <span class="mcq-card__title">{{ product.title }}</span>
+                    <span class="mcq-card__price">
+                      {{ product.price | money }}
+                      {%- if product.compare_at_price > product.price -%}
+                        <s>{{ product.compare_at_price | money }}</s>
+                      {%- endif -%}
+                    </span>
+                  </div>
+                </a>
+              {%- endfor -%}
+            </div>
+            {%- if col.url != blank -%}
+              <div class="mcq-view-all">
+                <a href="{{ col.url }}" class="mcq-btn mcq-btn--outline-dark">View all {{ col.title }} →</a>
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            <div class="mcq-empty">
+              <p><strong>Pick a collection for this band</strong> in the theme editor.<br>
+              Products, prices and images will appear automatically once LS Retail syncs your catalogue to Shopify.</p>
+            </div>
+          {%- endif -%}
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%} ---------- STREET FOOD FEATURE ---------- {%- endcomment -%}
+  {%- if s.street_heading != blank -%}
+    <section class="mcq-section mcq-section--dark">
+      <div class="mcq-wrap mcq-split">
+        <div class="mcq-split__media">
+          {%- if s.street_image != blank -%}
+            {{ s.street_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: s.street_heading }}
+          {%- else -%}
+            <span class="mcq-card__ph"></span>
+          {%- endif -%}
+        </div>
+        <div>
+          {%- if s.street_eyebrow != blank -%}<span class="mcq-tag" style="background:{{ s.brand_orange }};color:#fff;">{{ s.street_eyebrow }}</span>{%- endif -%}
+          <h2>{{ s.street_heading }}</h2>
+          {%- if s.street_text != blank -%}<p>{{ s.street_text }}</p>{%- endif -%}
+          {%- if s.street_note != blank -%}<div class="mcq-note">📍 {{ s.street_note }}</div>{%- endif -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- WHOLESALE CTA ---------- {%- endcomment -%}
+  {%- if s.wholesale_heading != blank -%}
+    <section class="mcq-section mcq-section--alt">
+      <div class="mcq-wrap mcq-split mcq-split--reverse">
+        <div class="mcq-split__media">
+          {%- if s.wholesale_image != blank -%}
+            {{ s.wholesale_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: s.wholesale_heading }}
+          {%- else -%}
+            <span class="mcq-card__ph"></span>
+          {%- endif -%}
+        </div>
+        <div>
+          <span class="mcq-tag">{{ s.wholesale_eyebrow }}</span>
+          <h2>{{ s.wholesale_heading }}</h2>
+          {%- if s.wholesale_text != blank -%}<p style="color:var(--mcq-grey);">{{ s.wholesale_text }}</p>{%- endif -%}
+          {%- if s.wholesale_btn_label != blank -%}
+            <a href="{{ s.wholesale_btn_link | default: '#' }}" class="mcq-btn mcq-btn--purple" style="margin-top:18px;">{{ s.wholesale_btn_label }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- REWARDS ---------- {%- endcomment -%}
+  {%- assign reward_blocks = section.blocks | where: 'type', 'reward' -%}
+  {%- if reward_blocks.size > 0 -%}
+    <section class="mcq-section mcq-rewards">
+      <div class="mcq-wrap">
+        <div class="mcq-head">
+          <span class="mcq-tag">{{ s.rewards_eyebrow }}</span>
+          <h2>{{ s.rewards_heading }}</h2>
+          {%- if s.rewards_text != blank -%}<p>{{ s.rewards_text }}</p>{%- endif -%}
+        </div>
+        <div class="mcq-rewards__grid">
+          {%- for block in reward_blocks -%}
+            <div class="mcq-reward" {{ block.shopify_attributes }}>
+              <div class="mcq-reward__icon">{{ block.settings.emoji | default: '🎁' }}</div>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if s.rewards_btn_label != blank -%}
+          <div class="mcq-btn-row" style="justify-content:center;margin-top:34px;">
+            <a href="{{ s.rewards_btn_link | default: '#' }}" class="mcq-btn mcq-btn--orange">{{ s.rewards_btn_label }}</a>
+          </div>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- LOCATIONS ---------- {%- endcomment -%}
+  {%- assign loc_blocks = section.blocks | where: 'type', 'location' -%}
+  {%- if loc_blocks.size > 0 -%}
+    <section class="mcq-section">
+      <div class="mcq-wrap">
+        <div class="mcq-head">
+          <span class="mcq-tag">{{ s.loc_eyebrow }}</span>
+          <h2>{{ s.loc_heading }}</h2>
+          {%- if s.loc_text != blank -%}<p>{{ s.loc_text }}</p>{%- endif -%}
+        </div>
+        <div class="mcq-loc-grid">
+          {%- for block in loc_blocks -%}
+            {%- assign lb = block.settings -%}
+            <div class="mcq-loc" {{ block.shopify_attributes }}>
+              <h3>{{ lb.name }}</h3>
+              {%- if lb.address != blank -%}<p>{{ lb.address }}</p>{%- endif -%}
+              {%- if lb.hours != blank -%}<p>{{ lb.hours }}</p>{%- endif -%}
+              {%- if lb.badge != blank -%}<span class="mcq-loc__badge">{{ lb.badge }}</span><br>{%- endif -%}
+              {%- if lb.map_link != blank -%}<a class="mcq-loc__dir" href="{{ lb.map_link }}" target="_blank" rel="noopener">Get Directions →</a>{%- endif -%}
+            </div>
+          {%- endfor -%}
+          {%- if s.loc_show_help -%}
+            <div class="mcq-loc mcq-loc--cta">
+              <h3>{{ s.loc_help_title | default: 'Need help finding us?' }}</h3>
+              <p>{{ s.loc_help_text }}</p>
+              {%- if s.phone != blank -%}<a class="mcq-loc__dir" href="tel:{{ s.phone | remove: ' ' }}" style="color:var(--mcq-orange);">📞 {{ s.phone }}</a>{%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- NEWSLETTER ---------- {%- endcomment -%}
+  {%- if s.show_newsletter -%}
+    <section class="mcq-section mcq-news">
+      <div class="mcq-wrap">
+        <h2>{{ s.news_heading }}</h2>
+        {%- if s.news_text != blank -%}<p>{{ s.news_text }}</p>{%- endif -%}
+        {%- form 'customer' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- if form.posted_successfully? -%}
+            <p style="font-weight:700;color:var(--mcq-dark);">🎉 Thanks — you're subscribed!</p>
+          {%- else -%}
+            <input type="email" name="contact[email]" placeholder="Your email address" required>
+            <button type="submit">Subscribe</button>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+</div>
+
+{%- comment -%} Minimal JS: click-to-play facade for external videos {%- endcomment -%}
+<script>
+  (function () {
+    document.querySelectorAll('[data-mcq-play]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var type = btn.getAttribute('data-type');
+        var id = btn.getAttribute('data-id');
+        var src = '';
+        if (type === 'youtube') {
+          src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+        } else if (type === 'vimeo') {
+          src = 'https://player.vimeo.com/video/' + id + '?autoplay=1';
+        }
+        if (!src) return;
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute('src', src);
+        iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('title', 'MCQ video');
+        var wrap = btn.closest('[data-mcq-video]');
+        wrap.querySelectorAll('img, .mcq-video__caption, [data-mcq-play]').forEach(function (el) { el.remove(); });
+        wrap.appendChild(iframe);
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "MCQ Homepage",
+  "tag": "section",
+  "class": "mcq-homepage-section",
+  "settings": [
+    { "type": "header", "content": "Brand colours" },
+    { "type": "color", "id": "brand_green", "label": "Green", "default": "#99C547" },
+    { "type": "color", "id": "brand_orange", "label": "Orange", "default": "#F7A933" },
+    { "type": "color", "id": "brand_purple", "label": "Purple", "default": "#8C3493" },
+
+    { "type": "header", "content": "1 · Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Fresh · International Grocery · Western Australia" },
+    { "type": "text", "id": "hero_heading", "label": "Heading", "default": "Western Australia's home for fresh & international groceries." },
+    { "type": "textarea", "id": "hero_subheading", "label": "Sub-heading", "default": "Five stores across Perth packed with the freshest WA produce, a huge range of imported international grocery, in-house butchery, and Vietnamese street food on site. Unbeatable local value, every day." },
+    { "type": "image_picker", "id": "hero_image", "label": "Background image" },
+    { "type": "video", "id": "hero_video", "label": "Background video (optional, autoplays muted)" },
+    { "type": "text", "id": "hero_btn1_label", "label": "Button 1 label", "default": "Find Your Nearest Store" },
+    { "type": "url", "id": "hero_btn1_link", "label": "Button 1 link" },
+    { "type": "text", "id": "hero_btn2_label", "label": "Button 2 label", "default": "Join MCQ Rewards" },
+    { "type": "url", "id": "hero_btn2_link", "label": "Button 2 link" },
+
+    { "type": "header", "content": "2 · Video band" },
+    { "type": "checkbox", "id": "show_videos", "label": "Show video band", "default": true },
+    { "type": "text", "id": "videos_eyebrow", "label": "Eyebrow", "default": "Watch" },
+    { "type": "text", "id": "videos_heading", "label": "Heading", "default": "Step inside MCQ Supermarket" },
+    { "type": "textarea", "id": "videos_text", "label": "Text", "default": "Fresh produce every morning and authentic street food, made on site." },
+    { "type": "header", "content": "Video 1" },
+    { "type": "video", "id": "video_1", "label": "Shopify-hosted video" },
+    { "type": "video_url", "id": "video_url_1", "label": "…or external video URL (YouTube / Vimeo)", "accept": ["youtube", "vimeo"] },
+    { "type": "image_picker", "id": "video_poster_1", "label": "Poster image (for external video)" },
+    { "type": "text", "id": "video_title_1", "label": "Caption title", "default": "Fresh WA produce, daily" },
+    { "type": "text", "id": "video_text_1", "label": "Caption text", "default": "Sourced from local farms every morning." },
+    { "type": "header", "content": "Video 2" },
+    { "type": "video", "id": "video_2", "label": "Shopify-hosted video" },
+    { "type": "video_url", "id": "video_url_2", "label": "…or external video URL (YouTube / Vimeo)", "accept": ["youtube", "vimeo"] },
+    { "type": "image_picker", "id": "video_poster_2", "label": "Poster image (for external video)" },
+    { "type": "text", "id": "video_title_2", "label": "Caption title", "default": "Vietnamese street food" },
+    { "type": "text", "id": "video_text_2", "label": "Caption text", "default": "Banh mi, pho & more — made in-store." },
+
+    { "type": "header", "content": "3 · Featured categories heading" },
+    { "type": "text", "id": "cat_eyebrow", "label": "Eyebrow", "default": "Shop by department" },
+    { "type": "text", "id": "cat_heading", "label": "Heading", "default": "Featured Categories" },
+    { "type": "text", "id": "cat_text", "label": "Text", "default": "Everything from farm-fresh produce to your favourite imported brands." },
+
+    { "type": "header", "content": "4 · Fresh produce band" },
+    { "type": "text", "id": "fresh_eyebrow", "label": "Eyebrow", "default": "🥬 From WA farms" },
+    { "type": "text", "id": "fresh_heading", "label": "Heading", "default": "Fresh Produce" },
+    { "type": "text", "id": "fresh_text", "label": "Text", "default": "Fruit & vegetables delivered fresh every morning." },
+    { "type": "collection", "id": "fresh_collection", "label": "Collection" },
+    { "type": "range", "id": "fresh_count", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 4 },
+
+    { "type": "header", "content": "5 · International groceries band" },
+    { "type": "text", "id": "intl_eyebrow", "label": "Eyebrow", "default": "🌏 From around the world" },
+    { "type": "text", "id": "intl_heading", "label": "Heading", "default": "International Groceries" },
+    { "type": "text", "id": "intl_text", "label": "Text", "default": "A huge range of Asian & international brands you know and love." },
+    { "type": "collection", "id": "intl_collection", "label": "Collection" },
+    { "type": "range", "id": "intl_count", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 4 },
+
+    { "type": "header", "content": "6 · Weekly specials band" },
+    { "type": "text", "id": "specials_eyebrow", "label": "Eyebrow", "default": "🔥 This week only" },
+    { "type": "text", "id": "specials_heading", "label": "Heading", "default": "Weekly Specials" },
+    { "type": "text", "id": "specials_text", "label": "Text", "default": "Unbeatable value — new deals every week." },
+    { "type": "collection", "id": "specials_collection", "label": "Collection" },
+    { "type": "range", "id": "specials_count", "label": "Products to show", "min": 2, "max": 8, "step": 1, "default": 4 },
+
+    { "type": "header", "content": "7 · Street food feature" },
+    { "type": "text", "id": "street_eyebrow", "label": "Eyebrow", "default": "Only at MCQ" },
+    { "type": "text", "id": "street_heading", "label": "Heading", "default": "MCQ Vietnamese Street Food" },
+    { "type": "textarea", "id": "street_text", "label": "Text", "default": "Shop, eat and enjoy — freshly made authentic Vietnamese cuisine served right inside the supermarket. Banh mi, pho and more, made fresh on site every day." },
+    { "type": "text", "id": "street_note", "label": "Locations note", "default": "Available at MCQ Morley · MCQ Subiaco · MCQ Mirrabooka" },
+    { "type": "image_picker", "id": "street_image", "label": "Image" },
+
+    { "type": "header", "content": "8 · Wholesale call-to-action" },
+    { "type": "text", "id": "wholesale_eyebrow", "label": "Eyebrow", "default": "For business" },
+    { "type": "text", "id": "wholesale_heading", "label": "Heading", "default": "Wholesale & bulk supply for WA businesses" },
+    { "type": "textarea", "id": "wholesale_text", "label": "Text", "default": "Restaurants, cafés and retailers — get unbeatable wholesale pricing on fresh produce and international groceries. Tell us what you need and our Malaga team will be in touch." },
+    { "type": "text", "id": "wholesale_btn_label", "label": "Button label", "default": "Make a Wholesale Inquiry" },
+    { "type": "url", "id": "wholesale_btn_link", "label": "Button link (Wholesale page)" },
+    { "type": "image_picker", "id": "wholesale_image", "label": "Image" },
+
+    { "type": "header", "content": "9 · Rewards heading" },
+    { "type": "text", "id": "rewards_eyebrow", "label": "Eyebrow", "default": "Loyalty" },
+    { "type": "text", "id": "rewards_heading", "label": "Heading", "default": "MCQ Rewards" },
+    { "type": "text", "id": "rewards_text", "label": "Text", "default": "Earn every time you shop — no paper cards, just your phone." },
+    { "type": "text", "id": "rewards_btn_label", "label": "Button label", "default": "Join MCQ Rewards — It's Free" },
+    { "type": "url", "id": "rewards_btn_link", "label": "Button link" },
+
+    { "type": "header", "content": "10 · Locations heading" },
+    { "type": "text", "id": "loc_eyebrow", "label": "Eyebrow", "default": "Find us" },
+    { "type": "text", "id": "loc_heading", "label": "Heading", "default": "5 Locations Across Perth" },
+    { "type": "text", "id": "loc_text", "label": "Text", "default": "All in Western Australia — open 7 days at most stores." },
+    { "type": "checkbox", "id": "loc_show_help", "label": "Show 'need help' card", "default": true },
+    { "type": "text", "id": "loc_help_title", "label": "Help card title", "default": "Need help finding us?" },
+    { "type": "textarea", "id": "loc_help_text", "label": "Help card text", "default": "Call any store or our support line and we'll point you the right way." },
+    { "type": "text", "id": "phone", "label": "Phone number", "default": "08 9248 5623" },
+
+    { "type": "header", "content": "11 · Newsletter" },
+    { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter", "default": true },
+    { "type": "text", "id": "news_heading", "label": "Heading", "default": "Get Our Weekly Specials" },
+    { "type": "text", "id": "news_text", "label": "Text", "default": "Fresh deals straight to your inbox — no spam, just savings." }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "5" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Perth locations" }
+      ]
+    },
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection (auto-fills image, title & link)" },
+        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "text", "id": "title", "label": "Title override" },
+        { "type": "url", "id": "link", "label": "Link override" },
+        { "type": "text", "id": "emoji", "label": "Emoji (if no image)", "default": "🛒" }
+      ]
+    },
+    {
+      "type": "reward",
+      "name": "Reward benefit",
+      "settings": [
+        { "type": "text", "id": "emoji", "label": "Emoji", "default": "🎁" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Earn Vouchers" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Get 1 point for every $1 spent, and a $10 reward every 1,000 points." }
+      ]
+    },
+    {
+      "type": "location",
+      "name": "Store location",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Store name", "default": "MCQ Malaga" },
+        { "type": "textarea", "id": "address", "label": "Address" },
+        { "type": "text", "id": "hours", "label": "Opening hours", "default": "Open 7 days" },
+        { "type": "text", "id": "badge", "label": "Badge (optional)" },
+        { "type": "url", "id": "map_link", "label": "Google Maps link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MCQ Homepage",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "5", "label": "Perth locations" } },
+        { "type": "stat", "settings": { "value": "1000s", "label": "Fresh & international lines" } },
+        { "type": "stat", "settings": { "value": "7", "label": "Days a week" } },
+        { "type": "stat", "settings": { "value": "WA", "label": "Proudly local" } },
+        { "type": "category", "settings": { "title": "Fresh Produce", "emoji": "🥬" } },
+        { "type": "category", "settings": { "title": "International Groceries", "emoji": "🌏" } },
+        { "type": "category", "settings": { "title": "Butchery & Seafood", "emoji": "🥩" } },
+        { "type": "category", "settings": { "title": "Weekly Specials", "emoji": "🔥" } },
+        { "type": "reward", "settings": { "emoji": "🎟️", "title": "Earn Vouchers", "text": "Get 1 point for every $1 spent, and a $10 reward every 1,000 points." } },
+        { "type": "reward", "settings": { "emoji": "⚡", "title": "Boosted Offers", "text": "Collect boosted points on the items you love to shop for most." } },
+        { "type": "reward", "settings": { "emoji": "🎁", "title": "Member Bonus", "text": "Look out for Member Bonus products and earn up to $20 back on a single item." } },
+        { "type": "location", "settings": { "name": "MCQ Malaga", "address": "688 Marshall Rd, Malaga WA 6090", "hours": "8am – 7pm · Open 7 days", "badge": "Central branch", "map_link": "https://www.google.com/maps/search/?api=1&query=688+Marshall+Rd+Malaga+WA+6090" } },
+        { "type": "location", "settings": { "name": "MCQ Morley — Coventry Village", "address": "Coventry Village, Morley WA 6062", "hours": "8am – 8pm · Open 7 days", "badge": "Street Food on site", "map_link": "https://www.google.com/maps/search/?api=1&query=Coventry+Village+Morley+WA+6062" } },
+        { "type": "location", "settings": { "name": "MCQ Mirrabooka", "address": "Mirrabooka WA 6061", "hours": "Open 7 days", "badge": "Street Food on site", "map_link": "https://www.google.com/maps/search/?api=1&query=Mirrabooka+WA+6061" } },
+        { "type": "location", "settings": { "name": "MCQ Subiaco", "address": "Subiaco WA 6008", "hours": "Open 7 days", "badge": "Street Food on site", "map_link": "https://www.google.com/maps/search/?api=1&query=Subiaco+WA+6008" } },
+        { "type": "location", "settings": { "name": "MCQ Armadale", "address": "Armadale WA 6112", "hours": "Mon–Fri 8am–7pm · Sat–Sun 11am–5pm", "map_link": "https://www.google.com/maps/search/?api=1&query=Armadale+WA+6112" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

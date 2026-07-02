@@ -1,0 +1,185 @@
+{%- comment -%}
+  ============================================================
+  MCQ Supermarket — Wholesale Inquiry
+  Uses Shopify's native contact form. Submissions are
+  emailed to the store's contact / sender email
+  (Settings → Notifications → Contact form). No app required.
+  Interested-category checkboxes are section blocks.
+  ============================================================
+{%- endcomment -%}
+
+{{ 'mcq-custom.css' | asset_url | stylesheet_tag }}
+
+{%- liquid assign s = section.settings -%}
+
+<div
+  class="mcq mcq-wholesale-wrap"
+  style="--mcq-green:{{ s.brand_green }};--mcq-orange:{{ s.brand_orange }};--mcq-purple:{{ s.brand_purple }};"
+>
+  <section class="mcq-section">
+    <div class="mcq-wrap mcq-whole">
+
+      {%- comment -%} ---------- LEFT: pitch ---------- {%- endcomment -%}
+      <div class="mcq-whole__aside">
+        <span class="mcq-tag">{{ s.eyebrow }}</span>
+        <h2>{{ s.heading }}</h2>
+        {%- if s.intro != blank -%}<p>{{ s.intro }}</p>{%- endif -%}
+
+        {%- assign point_blocks = section.blocks | where: 'type', 'point' -%}
+        {%- if point_blocks.size > 0 -%}
+          <ul class="mcq-whole__points">
+            {%- for block in point_blocks -%}
+              <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if s.phone != blank -%}
+          <p style="margin-top:24px;font-weight:700;">
+            Prefer to talk? Call our Malaga team:<br>
+            <a href="tel:{{ s.phone | remove: ' ' }}" style="color:var(--mcq-purple);font-size:20px;">📞 {{ s.phone }}</a>
+          </p>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------- RIGHT: form ---------- {%- endcomment -%}
+      <div>
+        {%- form 'contact', id: 'mcq-wholesale-form' -%}
+          <input type="hidden" name="contact[Inquiry type]" value="Wholesale">
+
+          {%- if form.posted_successfully? -%}
+            <div class="mcq-form__success">
+              ✅ Thank you! Your wholesale inquiry has been sent. Our team will be in touch shortly.
+            </div>
+          {%- elsif form.errors -%}
+            <div class="mcq-form__success" style="background:#fdecea;color:#a5261c;border-color:#f4c7c3;">
+              ⚠️ {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          <div class="mcq-form">
+            <div class="mcq-form__row">
+              <div class="mcq-field">
+                <label for="w-business">Business Name <span class="req">*</span></label>
+                <input type="text" id="w-business" name="contact[Business name]" required>
+              </div>
+              <div class="mcq-field">
+                <label for="w-contact">Contact Name <span class="req">*</span></label>
+                <input type="text" id="w-contact" name="contact[Contact name]" required>
+              </div>
+            </div>
+
+            <div class="mcq-form__row">
+              <div class="mcq-field">
+                <label for="w-email">Email <span class="req">*</span></label>
+                <input type="email" id="w-email" name="contact[email]" required>
+              </div>
+              <div class="mcq-field">
+                <label for="w-phone">Phone <span class="req">*</span></label>
+                <input type="tel" id="w-phone" name="contact[Phone]" required>
+              </div>
+            </div>
+
+            <div class="mcq-form__row">
+              <div class="mcq-field">
+                <label for="w-abn">ABN <span class="req">*</span></label>
+                <input type="text" id="w-abn" name="contact[ABN]" inputmode="numeric" maxlength="14" placeholder="00 000 000 000" required>
+              </div>
+              <div class="mcq-field">
+                <label for="w-type">Business Type <span class="req">*</span></label>
+                <select id="w-type" name="contact[Business type]" required>
+                  <option value="">Select…</option>
+                  {%- assign types = s.business_types | split: ',' -%}
+                  {%- for t in types -%}
+                    <option value="{{ t | strip | escape }}">{{ t | strip }}</option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            </div>
+
+            {%- assign cat_blocks = section.blocks | where: 'type', 'category' -%}
+            {%- if cat_blocks.size > 0 -%}
+              <div class="mcq-field">
+                <label>Interested Categories</label>
+                <div class="mcq-checks">
+                  {%- for block in cat_blocks -%}
+                    <label class="mcq-check" {{ block.shopify_attributes }}>
+                      <input type="checkbox" name="contact[Interested: {{ block.settings.name | escape }}]" value="Yes">
+                      {{ block.settings.name }}
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+            <div class="mcq-field">
+              <label for="w-message">Message</label>
+              <textarea id="w-message" name="contact[body]" placeholder="Tell us roughly what volumes / products you're after…"></textarea>
+            </div>
+
+            <button type="submit" class="mcq-btn mcq-btn--purple mcq-form__submit">{{ s.submit_label | default: 'Send Wholesale Inquiry' }}</button>
+            {%- if s.form_note != blank -%}<p class="mcq-form__note">{{ s.form_note }}</p>{%- endif -%}
+          </div>
+        {%- endform -%}
+      </div>
+
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "MCQ Wholesale",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Brand colours" },
+    { "type": "color", "id": "brand_green", "label": "Green", "default": "#99C547" },
+    { "type": "color", "id": "brand_orange", "label": "Orange", "default": "#F7A933" },
+    { "type": "color", "id": "brand_purple", "label": "Purple", "default": "#8C3493" },
+
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Wholesale" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Wholesale & bulk supply for WA businesses" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "Restaurants, cafés, caterers and retailers — MCQ offers unbeatable wholesale pricing on fresh produce and international groceries. Fill in the form and our Malaga wholesale team will get back to you." },
+    { "type": "text", "id": "phone", "label": "Phone", "default": "08 9248 5623" },
+
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "business_types", "label": "Business types (comma separated)", "default": "Restaurant, Café, Caterer, Grocery / Retailer, Distributor, Other" },
+    { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send Wholesale Inquiry" },
+    { "type": "text", "id": "form_note", "label": "Note below form", "default": "We usually reply within 1–2 business days." }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Selling point",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Competitive wholesale pricing across thousands of lines" }
+      ]
+    },
+    {
+      "type": "category",
+      "name": "Interested category",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Category name", "default": "Fresh Produce" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MCQ Wholesale",
+      "blocks": [
+        { "type": "point", "settings": { "text": "Competitive wholesale pricing across thousands of lines" } },
+        { "type": "point", "settings": { "text": "Fresh produce sourced from WA farms" } },
+        { "type": "point", "settings": { "text": "Huge range of imported international groceries" } },
+        { "type": "point", "settings": { "text": "Flexible ordering to suit your business" } },
+        { "type": "category", "settings": { "name": "Fresh Produce" } },
+        { "type": "category", "settings": { "name": "International Groceries" } },
+        { "type": "category", "settings": { "name": "Rice, Noodles & Dry Goods" } },
+        { "type": "category", "settings": { "name": "Frozen" } },
+        { "type": "category", "settings": { "name": "Meat & Seafood" } },
+        { "type": "category", "settings": { "name": "Drinks & Snacks" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

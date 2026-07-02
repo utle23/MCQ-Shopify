@@ -1,0 +1,484 @@
+/* ============================================================
+   MCQ Supermarket — Custom UI Kit
+   Premium retail styling for custom MCQ sections.
+   All rules are namespaced under .mcq-* so they never collide
+   with the Horizon theme. Colours are driven by CSS variables
+   set per-section from the theme editor (see section schema).
+   ============================================================ */
+
+.mcq {
+  /* Brand palette — overridable per section via inline style */
+  --mcq-green: #99C547;
+  --mcq-orange: #F7A933;
+  --mcq-purple: #8C3493;
+  --mcq-dark: #1A1A1A;
+  --mcq-cream: #FEF3DC;
+  --mcq-lightgreen: #E8F5D0;
+  --mcq-grey: #6b6b6b;
+  --mcq-radius: 18px;
+  --mcq-shadow: 0 6px 20px rgba(0, 0, 0, .07);
+  --mcq-shadow-lg: 0 14px 40px rgba(0, 0, 0, .12);
+  --mcq-maxw: 1180px;
+  --mcq-font: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-family: var(--mcq-font);
+  color: var(--mcq-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mcq *,
+.mcq *::before,
+.mcq *::after { box-sizing: border-box; }
+
+.mcq img { max-width: 100%; display: block; }
+
+.mcq h1, .mcq h2, .mcq h3, .mcq h4 {
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.mcq p { margin: 0; }
+
+.mcq-wrap {
+  max-width: var(--mcq-maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Buttons ---------- */
+.mcq-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 30px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: .3px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+  text-align: center;
+}
+.mcq-btn:hover { transform: translateY(-2px); box-shadow: var(--mcq-shadow); }
+.mcq-btn--orange { background: var(--mcq-orange); color: #fff; }
+.mcq-btn--purple { background: var(--mcq-purple); color: #fff; }
+.mcq-btn--green { background: var(--mcq-green); color: var(--mcq-dark); }
+.mcq-btn--dark { background: var(--mcq-dark); color: #fff; }
+.mcq-btn--outline { border-color: #fff; color: #fff; }
+.mcq-btn--outline-dark { border-color: var(--mcq-dark); color: var(--mcq-dark); }
+
+/* ---------- Tags / eyebrows ---------- */
+.mcq-tag {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  padding: 6px 15px;
+  border-radius: 999px;
+  background: var(--mcq-lightgreen);
+  color: #4c6b1f;
+}
+
+/* ---------- Section shell ---------- */
+.mcq-section { padding: 72px 0; }
+.mcq-section--tight { padding: 48px 0; }
+.mcq-section--alt { background: #FAF8F2; }
+.mcq-section--dark { background: var(--mcq-dark); color: #fff; }
+
+.mcq-head {
+  max-width: 640px;
+  margin: 0 auto 44px;
+  text-align: center;
+}
+.mcq-head h2 { font-size: clamp(26px, 4vw, 38px); margin-top: 12px; }
+.mcq-head p { color: var(--mcq-grey); margin-top: 12px; font-size: 15.5px; }
+.mcq-section--dark .mcq-head p { color: #cfcfcf; }
+
+/* ============================================================
+   HERO — dual video
+   ============================================================ */
+.mcq-hero {
+  position: relative;
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
+  background: var(--mcq-dark);
+}
+.mcq-hero__media,
+.mcq-hero__media video,
+.mcq-hero__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mcq-hero__media svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mcq-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(26, 26, 26, .82) 0%, rgba(26, 26, 26, .45) 45%, rgba(140, 52, 147, .5) 100%);
+}
+.mcq-hero__inner { position: relative; z-index: 2; padding: 96px 0 84px; }
+.mcq-hero .mcq-tag { background: var(--mcq-orange); color: #fff; }
+.mcq-hero h1 {
+  font-size: clamp(34px, 5.5vw, 56px);
+  margin: 20px 0 18px;
+  max-width: 720px;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, .35);
+}
+.mcq-hero p.mcq-hero__sub {
+  font-size: 17px;
+  max-width: 580px;
+  opacity: .95;
+  margin-bottom: 32px;
+}
+.mcq-btn-row { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* dual video band under hero */
+.mcq-videos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.mcq-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+}
+.mcq-video video,
+.mcq-video img,
+.mcq-video iframe,
+.mcq-video svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
+.mcq-video__caption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 22px 24px 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .75), transparent);
+  color: #fff;
+  z-index: 2;
+}
+.mcq-video__caption h3 { font-size: 18px; }
+.mcq-video__caption p { font-size: 13.5px; opacity: .9; margin-top: 4px; }
+.mcq-video__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 68px; height: 68px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .92);
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 3;
+  transition: transform .15s ease;
+}
+.mcq-video__play:hover { transform: scale(1.08); }
+.mcq-video__play::after {
+  content: "";
+  margin-left: 4px;
+  border-style: solid;
+  border-width: 12px 0 12px 20px;
+  border-color: transparent transparent transparent var(--mcq-purple);
+}
+
+/* ---------- Stats strip ---------- */
+.mcq-stats { background: var(--mcq-dark); color: #fff; padding: 30px 0; }
+.mcq-stats__grid {
+  display: flex; justify-content: space-between; flex-wrap: wrap;
+  gap: 20px; text-align: center;
+}
+.mcq-stats__grid .mcq-stat { flex: 1; min-width: 140px; }
+.mcq-stat b {
+  display: block; font-size: 30px; font-weight: 800;
+  color: var(--mcq-orange);
+}
+.mcq-stat span { font-size: 12.5px; opacity: .85; letter-spacing: .4px; text-transform: uppercase; }
+
+/* ---------- Featured categories ---------- */
+.mcq-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.mcq-cat {
+  position: relative;
+  border-radius: var(--mcq-radius);
+  overflow: hidden;
+  min-height: 220px;
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  box-shadow: var(--mcq-shadow);
+  background: var(--mcq-lightgreen);
+}
+.mcq-cat img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.mcq-cat:hover img { transform: scale(1.06); }
+.mcq-cat__label {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, .78), transparent);
+  font-weight: 700;
+  font-size: 16px;
+}
+.mcq-cat__placeholder { display: flex; align-items: center; justify-content: center; font-size: 64px; }
+
+/* ---------- Product / collection grid ---------- */
+.mcq-prod-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+.mcq-prod-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.mcq-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: var(--mcq-radius);
+  overflow: hidden;
+  box-shadow: var(--mcq-shadow);
+  transition: transform .18s ease, box-shadow .18s ease;
+  display: flex;
+  flex-direction: column;
+}
+.mcq-card:hover { transform: translateY(-4px); box-shadow: var(--mcq-shadow-lg); }
+.mcq-card__media { position: relative; aspect-ratio: 1 / 1; background: var(--mcq-lightgreen); overflow: hidden; }
+.mcq-card__media img { width: 100%; height: 100%; object-fit: cover; }
+.mcq-card__media .mcq-card__ph { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 54px; }
+.mcq-card__badge {
+  position: absolute; top: 12px; left: 12px;
+  font-size: 11px; font-weight: 700;
+  background: var(--mcq-orange); color: #fff;
+  padding: 4px 11px; border-radius: 999px;
+  z-index: 2;
+}
+.mcq-card__badge--sale { background: #e53935; }
+.mcq-card__body { padding: 16px 16px 18px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.mcq-card__title { font-size: 14.5px; font-weight: 600; color: var(--mcq-dark); }
+.mcq-card__price { font-weight: 800; font-size: 16px; color: var(--mcq-purple); }
+.mcq-card__price s { color: var(--mcq-grey); font-weight: 500; font-size: 13px; margin-left: 6px; }
+.mcq-card__note { font-size: 12.5px; color: var(--mcq-grey); }
+
+.mcq-view-all { text-align: center; margin-top: 40px; }
+
+/* Empty-state hint shown in editor when no collection picked */
+.mcq-empty {
+  border: 2px dashed #d8d3c4;
+  border-radius: var(--mcq-radius);
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--mcq-grey);
+  background: #fff;
+}
+
+/* ---------- Feature split (street food / produce band) ---------- */
+.mcq-split { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: center; }
+.mcq-split--reverse .mcq-split__media { order: 2; }
+.mcq-split__media img { border-radius: var(--mcq-radius); width: 100%; object-fit: cover; }
+.mcq-split__media .mcq-card__ph { aspect-ratio: 4/3; border-radius: var(--mcq-radius); background: var(--mcq-lightgreen); }
+.mcq-split h2 { font-size: clamp(26px, 4vw, 36px); margin: 14px 0 16px; }
+.mcq-split p { margin-bottom: 14px; font-size: 15.5px; }
+.mcq-section--dark .mcq-split p { color: #dcdcdc; }
+.mcq-split .mcq-note { font-size: 13.5px; color: var(--mcq-orange); font-weight: 700; margin-top: 18px; }
+
+/* ---------- Rewards band ---------- */
+.mcq-rewards { background: linear-gradient(135deg, var(--mcq-purple), #5e2466); color: #fff; text-align: center; }
+.mcq-rewards .mcq-tag { background: rgba(255, 255, 255, .18); color: #fff; }
+.mcq-rewards .mcq-head p { color: #e9d9eb; }
+.mcq-rewards__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.mcq-reward {
+  background: rgba(255, 255, 255, .08);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: var(--mcq-radius);
+  padding: 30px 24px;
+}
+.mcq-reward__icon { font-size: 40px; margin-bottom: 14px; }
+.mcq-reward h3 { font-size: 17px; margin-bottom: 8px; }
+.mcq-reward p { font-size: 13.5px; color: #e9d9eb; }
+
+/* ---------- Locations ---------- */
+.mcq-loc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.mcq-loc {
+  border: 1px solid #eee;
+  border-radius: var(--mcq-radius);
+  padding: 24px;
+  background: #fff;
+  box-shadow: var(--mcq-shadow);
+}
+.mcq-loc h3 { font-size: 16.5px; margin-bottom: 8px; color: var(--mcq-purple); }
+.mcq-loc p { font-size: 13.5px; color: var(--mcq-grey); margin-bottom: 4px; }
+.mcq-loc__badge {
+  display: inline-block; margin-top: 12px;
+  font-size: 11.5px; font-weight: 700;
+  background: var(--mcq-lightgreen); color: #4c6b1f;
+  padding: 4px 11px; border-radius: 999px;
+}
+.mcq-loc__dir { display: inline-block; margin-top: 14px; font-size: 13px; font-weight: 700; color: var(--mcq-orange); }
+.mcq-loc--cta { background: var(--mcq-dark); color: #fff; display: flex; flex-direction: column; justify-content: center; }
+.mcq-loc--cta h3 { color: #fff; }
+.mcq-loc--cta p { color: #ccc; }
+
+/* ---------- Newsletter ---------- */
+.mcq-news { background: var(--mcq-green); text-align: center; }
+.mcq-news h2 { font-size: clamp(24px, 4vw, 34px); margin-bottom: 10px; }
+.mcq-news p { color: #2b3a16; margin-bottom: 24px; }
+.mcq-news form { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; max-width: 560px; margin: 0 auto; }
+.mcq-news input, .mcq-news select {
+  padding: 14px 18px; border-radius: 999px; border: none;
+  font-family: var(--mcq-font); font-size: 14px; flex: 1; min-width: 180px;
+}
+.mcq-news button {
+  background: var(--mcq-dark); color: #fff; border: none;
+  padding: 14px 30px; border-radius: 999px; font-weight: 700;
+  cursor: pointer; font-family: var(--mcq-font);
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.mcq-about__lead { font-size: 18px; color: var(--mcq-grey); max-width: 720px; margin: 0 auto 8px; text-align: center; }
+.mcq-rte p { margin-bottom: 14px; color: var(--mcq-grey); font-size: 15.5px; }
+.mcq-rte p:last-child { margin-bottom: 0; }
+.mcq-rte a { color: var(--mcq-purple); font-weight: 600; text-decoration: underline; }
+.mcq-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 8px; }
+.mcq-value {
+  background: #fff; border: 1px solid #eee; border-radius: var(--mcq-radius);
+  padding: 28px 24px; box-shadow: var(--mcq-shadow); text-align: center;
+}
+.mcq-value__icon { font-size: 38px; margin-bottom: 14px; }
+.mcq-value h3 { font-size: 17px; margin-bottom: 8px; }
+.mcq-value p { font-size: 13.5px; color: var(--mcq-grey); }
+.mcq-timeline { max-width: 760px; margin: 0 auto; }
+.mcq-milestone {
+  display: grid; grid-template-columns: 120px 1fr; gap: 24px;
+  padding: 22px 0; border-bottom: 1px solid #eee; align-items: baseline;
+}
+.mcq-milestone:last-child { border-bottom: none; }
+.mcq-milestone .mcq-year { font-size: 26px; font-weight: 800; color: var(--mcq-purple); }
+.mcq-milestone h3 { font-size: 17px; margin-bottom: 6px; }
+.mcq-milestone p { font-size: 14px; color: var(--mcq-grey); }
+
+/* ============================================================
+   WHOLESALE FORM
+   ============================================================ */
+.mcq-whole { display: grid; grid-template-columns: 1fr 1.15fr; gap: 52px; align-items: start; }
+.mcq-whole__aside h2 { font-size: clamp(26px, 4vw, 36px); margin: 14px 0 16px; }
+.mcq-whole__aside p { color: var(--mcq-grey); font-size: 15px; margin-bottom: 16px; }
+.mcq-whole__points { list-style: none; padding: 0; margin: 20px 0 0; }
+.mcq-whole__points li { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; font-size: 14.5px; }
+.mcq-whole__points li::before { content: "✓"; color: var(--mcq-green); font-weight: 800; font-size: 18px; line-height: 1.2; }
+.mcq-form {
+  background: #fff; border: 1px solid #eee; border-radius: var(--mcq-radius);
+  padding: 34px; box-shadow: var(--mcq-shadow-lg);
+}
+.mcq-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.mcq-field { margin-bottom: 18px; display: flex; flex-direction: column; }
+.mcq-field label { font-size: 13px; font-weight: 700; margin-bottom: 7px; }
+.mcq-field label .req { color: #e53935; }
+.mcq-field input, .mcq-field select, .mcq-field textarea {
+  padding: 13px 15px; border: 1.5px solid #e2e2e2; border-radius: 12px;
+  font-family: var(--mcq-font); font-size: 14px; background: #fff;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.mcq-field input:focus, .mcq-field select:focus, .mcq-field textarea:focus {
+  outline: none; border-color: var(--mcq-purple);
+  box-shadow: 0 0 0 3px rgba(140, 52, 147, .12);
+}
+.mcq-field textarea { resize: vertical; min-height: 110px; }
+.mcq-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; }
+.mcq-check { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; }
+.mcq-check input { width: 17px; height: 17px; accent-color: var(--mcq-purple); }
+.mcq-form__submit { width: 100%; margin-top: 8px; justify-content: center; }
+.mcq-form__note { font-size: 12px; color: var(--mcq-grey); margin-top: 14px; text-align: center; }
+.mcq-form__success {
+  background: var(--mcq-lightgreen); color: #33520f;
+  border-radius: 12px; padding: 16px 18px; font-weight: 600;
+  font-size: 14px; margin-bottom: 20px; border: 1px solid #cfe6a6;
+}
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+.mcq-faq { max-width: 820px; margin: 0 auto; }
+.mcq-faq__cat { margin-bottom: 40px; }
+.mcq-faq__cat > h3 {
+  font-size: 20px; margin-bottom: 16px; color: var(--mcq-purple);
+  display: flex; align-items: center; gap: 10px;
+}
+.mcq-acc {
+  border: 1px solid #ececec; border-radius: 14px; margin-bottom: 12px;
+  overflow: hidden; background: #fff; box-shadow: var(--mcq-shadow);
+}
+.mcq-acc summary {
+  list-style: none; cursor: pointer; padding: 20px 56px 20px 22px;
+  font-weight: 600; font-size: 15.5px; position: relative;
+  transition: background .15s ease;
+}
+.mcq-acc summary::-webkit-details-marker { display: none; }
+.mcq-acc summary:hover { background: #FAF8F2; }
+.mcq-acc summary::after {
+  content: "+"; position: absolute; right: 22px; top: 50%;
+  transform: translateY(-50%); font-size: 24px; font-weight: 400;
+  color: var(--mcq-purple); transition: transform .2s ease;
+}
+.mcq-acc[open] summary::after { content: "−"; }
+.mcq-acc__body { padding: 0 22px 22px; color: var(--mcq-grey); font-size: 14.5px; line-height: 1.7; }
+.mcq-acc__body p { margin-bottom: 10px; }
+
+/* ============================================================
+   RESPONSIVE — mobile first refinements
+   ============================================================ */
+@media (max-width: 1000px) {
+  .mcq-cat-grid { grid-template-columns: repeat(2, 1fr); }
+  .mcq-prod-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 860px) {
+  .mcq-section { padding: 56px 0; }
+  .mcq-split { grid-template-columns: 1fr; gap: 30px; }
+  .mcq-split--reverse .mcq-split__media { order: 0; }
+  .mcq-rewards__grid { grid-template-columns: 1fr; }
+  .mcq-loc-grid { grid-template-columns: 1fr 1fr; }
+  .mcq-whole { grid-template-columns: 1fr; gap: 34px; }
+  .mcq-values { grid-template-columns: 1fr; }
+  .mcq-videos { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .mcq-wrap { padding: 0 18px; }
+  .mcq-prod-grid, .mcq-prod-grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .mcq-cat-grid { grid-template-columns: 1fr 1fr; }
+  .mcq-loc-grid { grid-template-columns: 1fr; }
+  .mcq-form { padding: 24px; }
+  .mcq-form__row, .mcq-checks { grid-template-columns: 1fr; }
+  .mcq-milestone { grid-template-columns: 1fr; gap: 4px; }
+  .mcq-hero { min-height: 520px; }
+  .mcq-hero__inner { padding: 72px 0 60px; }
+}
+@media (max-width: 420px) {
+  .mcq-prod-grid, .mcq-prod-grid--3, .mcq-cat-grid { grid-template-columns: 1fr; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mcq *, .mcq *::before, .mcq *::after { transition: none !important; animation: none !important; }
+}

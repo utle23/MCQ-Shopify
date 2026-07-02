@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "mcq_faq": {
+      "type": "mcq-faq",
+      "blocks": {
+        "q1": { "type": "faq", "settings": { "category": "MCQ Rewards", "question": "How do I sign up for MCQ Rewards?", "answer": "<p>You can join via the Go Rewards app, or simply give your details at the checkout of any MCQ store. It's free to join.</p>" } },
+        "q2": { "type": "faq", "settings": { "category": "MCQ Rewards", "question": "Where can I redeem my points?", "answer": "<p>Points can be redeemed as a discount directly off your bill at any MCQ Supermarket store in Western Australia.</p>" } },
+        "q3": { "type": "faq", "settings": { "category": "Wholesale Services", "question": "Do you offer wholesale prices for restaurants and businesses?", "answer": "<p>Yes — we offer highly competitive wholesale pricing. Please fill in our Wholesale Inquiry form or contact our Malaga branch for details.</p>" } },
+        "q4": { "type": "faq", "settings": { "category": "Wholesale Services", "question": "Is there a minimum order for wholesale?", "answer": "<p>It depends on the product. Get in touch via the Wholesale Inquiry form and our team will walk you through the current catalogue.</p>" } },
+        "q5": { "type": "faq", "settings": { "category": "Shopping & Payment", "question": "Can I order online and get delivery?", "answer": "<p>Yes — you can now shop online through our Shopify store. In-store shopping remains available at all five WA locations.</p>" } },
+        "q6": { "type": "faq", "settings": { "category": "Shopping & Payment", "question": "What payment methods do you accept?", "answer": "<p>We accept cash, EFTPOS, Visa, Mastercard and popular Australian digital wallets.</p>" } },
+        "q7": { "type": "faq", "settings": { "category": "Products & Fresh Produce", "question": "Is your fruit and veg fresh every day?", "answer": "<p>Absolutely. MCQ sources fresh produce from Western Australian farms every morning to guarantee the best quality.</p>" } },
+        "q8": { "type": "faq", "settings": { "category": "Products & Fresh Produce", "question": "Do you stock imported Asian products?", "answer": "<p>Yes — MCQ specialises in Asian and international groceries, with a huge range from Vietnam, Thailand, China, Malaysia and beyond.</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8"],
+      "settings": {}
+    }
+  },
+  "order": ["mcq_faq"]
+}

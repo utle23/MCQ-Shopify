@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "mcq_about": {
+      "type": "mcq-about",
+      "blocks": {
+        "value_1": { "type": "value", "settings": { "emoji": "🥬", "title": "Fresh, every day", "text": "Farm-fresh produce delivered each morning for the best quality." } },
+        "value_2": { "type": "value", "settings": { "emoji": "🌏", "title": "A world of flavour", "text": "A huge range of international groceries from across Asia and beyond." } },
+        "value_3": { "type": "value", "settings": { "emoji": "💰", "title": "Unbeatable value", "text": "Strong supplier relationships mean real savings passed on to you." } },
+        "ms_1": { "type": "milestone", "settings": { "year": "Pre-2020", "title": "Serving the community", "text": "MCQ builds a loyal following across Perth for fresh produce and international groceries." } },
+        "ms_2": { "type": "milestone", "settings": { "year": "2020", "title": "A growing network", "text": "Operating strongly across multiple Western Australian locations — Malaga, Morley, Armadale, Subiaco and Mirrabooka." } },
+        "ms_3": { "type": "milestone", "settings": { "year": "2025", "title": "Going digital", "text": "MCQ launches a brand-new digital experience powered by Shopify and LS Retail." } }
+      },
+      "block_order": ["value_1", "value_2", "value_3", "ms_1", "ms_2", "ms_3"],
+      "settings": {}
+    }
+  },
+  "order": ["mcq_about"]
+}

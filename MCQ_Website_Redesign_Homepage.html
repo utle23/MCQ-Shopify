@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!--
+  MCQ Supermarket — Homepage Redesign Prototype
+  Simplified from the live Wix site: "Our Brands" logo carousel and the 61-page
+  "Wholesale Catalogue" SKU listing have been removed (no checkout, low engagement,
+  duplicated by the separate Wholesale Inquiry form). Added: Vietnamese Street Food
+  spotlight, MCQ Rewards section, store locator — all pulled forward from buried
+  sub-pages onto the homepage. Photography reused from the live site's own asset
+  library (static.wixstatic.com) — swap for fresh shoots when convenient.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCQ Supermarket — Fresh & Asian Groceries, Perth WA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#99C547; --orange:#F7A933; --purple:#8C3493; --dark:#1A1A1A;
+    --cream:#FEF3DC; --lightgreen:#E8F5D0; --grey:#6b6b6b; --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:Montserrat,-apple-system,Arial,sans-serif;color:var(--dark);background:#fff;line-height:1.6;}
+  h1,h2,h3,h4{font-family:"Arial Black",Arial,Montserrat,sans-serif;line-height:1.15;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .btn{display:inline-block;padding:13px 28px;border-radius:999px;font-weight:700;font-size:14px;letter-spacing:.3px;transition:transform .15s ease;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-orange{background:var(--orange);color:#fff;}
+  .btn-purple{background:var(--purple);color:#fff;}
+  .btn-outline{border:2px solid #fff;color:#fff;}
+  .btn-dark-outline{border:2px solid var(--dark);color:var(--dark);}
+  .tag{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:5px 14px;border-radius:999px;}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #eee;}
+  .topbar{background:var(--dark);color:#fff;font-size:12.5px;}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:34px;}
+  .topbar a{opacity:.9;margin-left:16px;}
+  .topbar a:hover{opacity:1;}
+  .main-nav{display:flex;align-items:center;justify-content:space-between;height:78px;}
+  .logo-pill{background:#fff;border:1px solid #eee;border-radius:999px;padding:6px 10px;display:flex;align-items:center;}
+  .logo-pill img{height:38px;width:auto;}
+  nav.links{display:flex;gap:26px;}
+  nav.links a{font-size:14px;font-weight:600;color:var(--dark);}
+  nav.links a:hover{color:var(--purple);}
+  .nav-cta{display:flex;align-items:center;gap:14px;}
+  @media (max-width:920px){ nav.links{display:none;} }
+
+  /* Hero */
+  .hero{
+    position:relative;color:#fff;min-height:560px;display:flex;align-items:center;
+    background:linear-gradient(120deg,rgba(26,26,26,.78),rgba(140,52,147,.55)),
+      url('https://static.wixstatic.com/media/3a86bf_311a77a5c8814e8d9942c0effa0eac05~mv2.jpg/v1/fit/w_1920,h_1000,q_90,enc_avif,quality_auto/3a86bf_311a77a5c8814e8d9942c0effa0eac05~mv2.jpg') center/cover;
+    padding:90px 0 70px;
+  }
+  .hero .eyebrow{background:var(--orange);}
+  .hero h1{font-size:clamp(32px,5vw,52px);margin:18px 0 16px;max-width:680px;}
+  .hero p.sub{font-size:17px;max-width:560px;opacity:.92;margin-bottom:30px;}
+  .hero .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
+
+  /* Stats strip */
+  .stats{background:var(--dark);color:#fff;padding:26px 0;}
+  .stats .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;text-align:center;}
+  .stats .stat b{display:block;font-size:26px;color:var(--orange);font-family:"Arial Black",Arial,sans-serif;}
+  .stats .stat span{font-size:12.5px;opacity:.85;letter-spacing:.3px;}
+
+  /* Section heads */
+  section{padding:70px 0;}
+  .section-head{max-width:640px;margin:0 auto 42px;text-align:center;}
+  .section-head .tag{background:var(--lightgreen);color:#4c6b1f;}
+  .section-head h2{font-size:clamp(26px,4vw,36px);margin-top:10px;}
+  .section-head p{color:var(--grey);margin-top:10px;font-size:15px;}
+  .alt-bg{background:#FAF8F2;}
+
+  /* Whats on */
+  .promo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:880px){ .promo-grid{grid-template-columns:1fr;} }
+  .promo-card{border-radius:var(--radius);overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.07);background:#fff;}
+  .promo-card .img{height:200px;background-size:cover;background-position:center;}
+  .promo-card .body{padding:18px;}
+  .promo-card h3{font-size:16px;margin-bottom:6px;}
+  .promo-card p{font-size:13.5px;color:var(--grey);}
+
+  /* Viral & Popular products */
+  .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .product-grid-4{grid-template-columns:repeat(4,1fr);}
+  @media (max-width:900px){ .product-grid,.product-grid-4{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .product-grid,.product-grid-4{grid-template-columns:1fr;} }
+  .product-card{background:#fff;border:1px solid #eee;border-radius:var(--radius);padding:26px 20px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.05);}
+  .product-card .icon{font-size:38px;width:74px;height:74px;line-height:74px;margin:0 auto 14px;background:var(--lightgreen);border-radius:50%;}
+  .product-card h3{font-size:15.5px;margin-bottom:6px;}
+  .product-card p{font-size:13px;color:var(--grey);}
+  .badge{display:block;width:fit-content;margin:0 auto 10px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;}
+  .badge-viral{background:#FFE2E9;color:#c2185b;}
+
+  /* Street food */
+  .street{background:var(--dark);color:#fff;}
+  .street .grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+  @media (max-width:860px){ .street .grid{grid-template-columns:1fr;} }
+  .street img{border-radius:var(--radius);}
+  .street .tag{background:var(--orange);color:#fff;}
+  .street h2{font-size:clamp(26px,4vw,36px);margin:14px 0 16px;}
+  .street p{color:#ddd;margin-bottom:14px;font-size:15px;}
+  .street .locs{font-size:13.5px;color:var(--orange);font-weight:700;margin-top:18px;}
+
+  /* Rewards */
+  .rewards{background:linear-gradient(135deg,var(--purple),#5e2466);color:#fff;text-align:center;}
+  .rewards .section-head .tag{background:rgba(255,255,255,.18);color:#fff;}
+  .rewards .section-head p{color:#e9d9eb;}
+  .reward-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:860px){ .reward-grid{grid-template-columns:1fr;} }
+  .reward-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:var(--radius);padding:28px 22px;}
+  .reward-card img{height:56px;width:auto;margin:0 auto 16px;}
+  .reward-card h3{font-size:16px;margin-bottom:8px;}
+  .reward-card p{font-size:13.5px;color:#e9d9eb;}
+  .rewards .btn-row{margin-top:34px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+
+  /* Our story */
+  .story .grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;}
+  @media (max-width:860px){ .story .grid{grid-template-columns:1fr;} }
+  .story img{border-radius:var(--radius);}
+  .story .tag{background:var(--cream);color:#8a5c00;}
+  .story h2{font-size:clamp(26px,4vw,34px);margin:14px 0 16px;}
+  .story p{color:var(--grey);margin-bottom:14px;font-size:15px;}
+  .story .year{font-weight:800;color:var(--purple);font-family:"Arial Black",Arial,sans-serif;}
+
+  /* Locations */
+  .loc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:900px){ .loc-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:620px){ .loc-grid{grid-template-columns:1fr;} }
+  .loc-card{border:1px solid #eee;border-radius:var(--radius);padding:22px;background:#fff;}
+  .loc-card h3{font-size:16px;margin-bottom:8px;color:var(--purple);}
+  .loc-card p{font-size:13.5px;color:var(--grey);margin-bottom:4px;}
+  .loc-card .badge{display:inline-block;margin-top:10px;font-size:11.5px;font-weight:700;background:var(--lightgreen);color:#4c6b1f;padding:4px 10px;border-radius:999px;}
+  .loc-card a.dir{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:var(--orange);}
+
+  /* Newsletter */
+  .newsletter{background:var(--green);text-align:center;}
+  .newsletter h2{font-size:clamp(24px,4vw,32px);color:var(--dark);margin-bottom:10px;}
+  .newsletter p{color:#2b3a16;margin-bottom:24px;}
+  .nform{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;max-width:520px;margin:0 auto;}
+  .nform input,.nform select{padding:13px 16px;border-radius:999px;border:none;font-family:Montserrat,sans-serif;font-size:14px;flex:1;min-width:160px;}
+  .nform button{background:var(--dark);color:#fff;border:none;padding:13px 26px;border-radius:999px;font-weight:700;cursor:pointer;font-family:Montserrat,sans-serif;}
+
+  /* Footer */
+  footer{background:var(--dark);color:#bbb;padding:50px 0 24px;font-size:13.5px;}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;}
+  @media (max-width:780px){ .foot-grid{grid-template-columns:1fr 1fr;} }
+  .foot-grid h4{color:#fff;font-size:13px;margin-bottom:14px;letter-spacing:.4px;}
+  .foot-grid ul{list-style:none;}
+  .foot-grid li{margin-bottom:9px;}
+  .foot-grid a:hover{color:#fff;}
+  footer .bottom{margin-top:40px;padding-top:20px;border-top:1px solid #333;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="topbar">
+    <div class="wrap">
+      <span>5 stores across Perth · Open 7 days at most locations</span>
+      <span>
+        <a href="tel:0892485623">📞 08 9248 5623</a>
+        <a href="https://www.facebook.com/supermarketmcq">Facebook</a>
+        <a href="https://www.instagram.com/supermarketmcq/">Instagram</a>
+      </span>
+    </div>
+  </div>
+  <div class="wrap main-nav">
+    <a href="#" class="logo-pill">
+      <img src="https://static.wixstatic.com/media/cbb9f1_7409b27735bd4415a9992e2ecbd07038~mv2.png/v1/fill/w_240,h_150,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/cbb9f1_7409b27735bd4415a9992e2ecbd07038~mv2.png" alt="MCQ Supermarket logo">
+    </a>
+    <nav class="links">
+      <a href="#promotions">Promotions</a>
+      <a href="#viral">Shop</a>
+      <a href="#street-food">Street Food</a>
+      <a href="#rewards">MCQ Rewards</a>
+      <a href="#story">About Us</a>
+      <a href="#locations">Locations</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#locations" class="btn btn-dark-outline" style="padding:10px 20px;">Find a Store</a>
+      <a href="#rewards" class="btn btn-orange" style="padding:10px 20px;">Join MCQ Rewards</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="tag eyebrow">Fresh · Asian Grocery · Since 1992</span>
+    <h1>Western Australia's home for fresh &amp; Asian groceries.</h1>
+    <p class="sub">Family-run for over 33 years. Five stores across Perth packed with the freshest WA produce, a huge range of imported Asian grocery, in-house butchery, and Vietnamese Street Food dining on site.</p>
+    <div class="btn-row">
+      <a href="#locations" class="btn btn-orange">Find Your Nearest Store</a>
+      <a href="#rewards" class="btn btn-outline">Join MCQ Rewards</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><b>33+</b><span>YEARS IN WA</span></div>
+    <div class="stat"><b>5</b><span>PERTH LOCATIONS</span></div>
+    <div class="stat"><b>1000s</b><span>FRESH &amp; ASIAN GROCERY LINES</span></div>
+    <div class="stat"><b>3</b><span>IN-STORE STREET FOOD KITCHENS</span></div>
+  </div>
+</div>
+
+<section id="promotions">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">What's On</span>
+      <h2>Current Promotions</h2>
+      <p>Swap these cards each campaign — layout stays the same, content rotates.</p>
+    </div>
+    <div class="promo-grid">
+      <div class="promo-card">
+        <div class="img" style="background-image:url('https://static.wixstatic.com/media/3a86bf_568eef008e3f435a96d9cf1c4d0e35e7~mv2.jpg/v1/fill/w_700,h_500,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/mcq%20street%20food%20promotion.jpg')"></div>
+        <div class="body"><h3>Authentic Vietnamese Street Food</h3><p>Fresh banh mi, pho and more — made daily in-store at Morley, Subiaco &amp; Mirrabooka.</p></div>
+      </div>
+      <div class="promo-card">
+        <div class="img" style="background-image:url('https://static.wixstatic.com/media/3a86bf_58a008236a7b43e28ce5141f286c2d3e~mv2.jpg/v1/fill/w_700,h_500,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/fligh%20ticket%20giveaway.jpg')"></div>
+        <div class="body"><h3>Win 2 Flight Tickets</h3><p>Shop in-store and go in the draw — entry details on the Promotions page.</p></div>
+      </div>
+      <div class="promo-card">
+        <div class="img" style="background-image:url('https://static.wixstatic.com/media/3a86bf_1d471026baaf41a290cc6531e4a65440~mv2.jpg/v1/fill/w_700,h_500,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/3a86bf_1d471026baaf41a290cc6531e4a65440~mv2.jpg')"></div>
+        <div class="body"><h3>Seasonal Giveaway</h3><p>Look out for our seasonal in-store giveaways and weekly specials.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="viral">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag" style="background:#FFE2E9;color:#c2185b;">🔥 Trending</span>
+      <h2>Viral Right Now</h2>
+      <p>Placeholder picks below — swap in your actual trending items &amp; photos.</p>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="icon">🍦</div>
+        <span class="badge badge-viral">Viral on TikTok</span>
+        <h3>Fruit Ice Cream</h3>
+        <p>Durian &amp; mango sticky rice flavours — the dessert everyone's filming.</p>
+      </div>
+      <div class="product-card">
+        <div class="icon">🍜</div>
+        <span class="badge badge-viral">Spice Challenge</span>
+        <h3>Fire Noodles</h3>
+        <p>The instant noodle everyone's daring their friends to finish.</p>
+      </div>
+      <div class="product-card">
+        <div class="icon">🧋</div>
+        <span class="badge badge-viral">Trending</span>
+        <h3>Bubble Tea Kits</h3>
+        <p>Make-your-own boba kits — flying off the shelf.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="popular" class="alt-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">⭐ Customer Favourites</span>
+      <h2>Popular Products</h2>
+      <p>Placeholder picks below — swap in your actual bestsellers &amp; photos.</p>
+    </div>
+    <div class="product-grid product-grid-4">
+      <div class="product-card">
+        <div class="icon">🍚</div>
+        <h3>Jasmine Rice</h3>
+        <p>5kg &amp; 10kg bags, our best-selling staple.</p>
+      </div>
+      <div class="product-card">
+        <div class="icon">☕</div>
+        <h3>Vietnamese Drip Coffee</h3>
+        <p>Coffee &amp; condensed milk, a customer favourite.</p>
+      </div>
+      <div class="product-card">
+        <div class="icon">🥟</div>
+        <h3>Frozen Dumplings</h3>
+        <p>Pork, prawn &amp; vegetarian — always restocked fast.</p>
+      </div>
+      <div class="product-card">
+        <div class="icon">🐉</div>
+        <h3>Fresh Dragon Fruit</h3>
+        <p>Sourced fresh, restocked daily in-store.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="street-food" class="street">
+  <div class="wrap grid">
+    <div>
+      <img src="https://static.wixstatic.com/media/3a86bf_568eef008e3f435a96d9cf1c4d0e35e7~mv2.jpg/v1/fill/w_900,h_700,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/mcq%20street%20food%20promotion.jpg" alt="MCQ Vietnamese Street Food">
+    </div>
+    <div>
+      <span class="tag">Only at MCQ</span>
+      <h2>MCQ Vietnamese Street Food</h2>
+      <p>Shop, eat, and enjoy — freshly made authentic Vietnamese cuisine served right inside the supermarket. It's the one thing competitors can't copy, so it deserves a homepage spot, not just a line in our About page.</p>
+      <p>Banh mi, pho, and more, made fresh on site every day.</p>
+      <div class="locs">📍 Available at MCQ Morley · MCQ Subiaco · MCQ Mirrabooka</div>
+    </div>
+  </div>
+</section>
+
+<section id="rewards" class="rewards">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Loyalty</span>
+      <h2>MCQ Rewards</h2>
+      <p>Earn every time you shop — no paper cards, just your phone.</p>
+    </div>
+    <div class="reward-grid">
+      <div class="reward-card">
+        <img src="https://static.wixstatic.com/media/3a86bf_22c15bd0bba244a68dd9b4345b228f35~mv2.png/v1/fill/w_160,h_155,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/3a86bf_22c15bd0bba244a68dd9b4345b228f35~mv2.png" alt="">
+        <h3>Earn Vouchers</h3>
+        <p>Get 1 point for every $1 spent, and earn a $10 reward every time you hit 1,000 points.</p>
+      </div>
+      <div class="reward-card">
+        <img src="https://static.wixstatic.com/media/3a86bf_b70d21c681824e7ba2cda5d43502edc2~mv2.png/v1/fill/w_160,h_159,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/3a86bf_b70d21c681824e7ba2cda5d43502edc2~mv2.png" alt="">
+        <h3>Boosted Offers</h3>
+        <p>Collect boosted points on the items you love to shop for most.</p>
+      </div>
+      <div class="reward-card">
+        <img src="https://static.wixstatic.com/media/3a86bf_82a27d52681c40758492cca4703ec40e~mv2.png/v1/fill/w_160,h_159,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/3a86bf_82a27d52681c40758492cca4703ec40e~mv2.png" alt="">
+        <h3>Member Bonus</h3>
+        <p>Look out for Member Bonus products in-store and earn up to $20 back in points on a single item.</p>
+      </div>
+    </div>
+    <div class="btn-row">
+      <a href="#" class="btn btn-orange">Join MCQ Rewards — It's Free</a>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap grid">
+    <div>
+      <span class="tag">Our Story</span>
+      <h2>33 years of family, fresh produce &amp; community</h2>
+      <p>MCQ began in <span class="year">1992</span>, when Managing Director Minh Quang Lam opened the family's first fresh fruit, vegetables and Asian grocery store in Beechboro, WA.</p>
+      <p>Three decades on, the Lam family's belief in hard work, quality produce, real value and genuine service has grown MCQ into five stores across Perth — backed by a strong network of quality global suppliers that lets us source, import and pass on real savings to our customers.</p>
+      <a href="#" class="btn btn-purple">Read Our Full Story</a>
+    </div>
+    <div>
+      <img src="https://static.wixstatic.com/media/3a86bf_e4422be8763e46b69d6e8d980423fb42~mv2.webp/v1/fill/w_560,h_560,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/3a86bf_e4422be8763e46b69d6e8d980423fb42~mv2.webp" alt="MCQ Supermarket story">
+    </div>
+  </div>
+</section>
+
+<section id="locations" class="alt-bg">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Find Us</span>
+      <h2>5 Locations Across Perth</h2>
+    </div>
+    <div class="loc-grid">
+      <div class="loc-card">
+        <h3>MCQ Morley — Coventry Village</h3>
+        <p>243-253 Walter Rd W, Morley WA 6062</p>
+        <p>8am – 8pm · Open 7 days</p>
+        <span class="badge">Street Food on site</span><br>
+        <a class="dir" href="https://www.google.com/maps/search/?api=1&query=243-253+Walter+Rd+W+Morley+WA+6062">Get Directions →</a>
+      </div>
+      <div class="loc-card">
+        <h3>MCQ Subiaco — Pavilion Fresh Market</h3>
+        <p>4A Seddon St, Subiaco WA 6008</p>
+        <p>9am – 7pm · Open 7 days</p>
+        <span class="badge">Street Food on site</span><br>
+        <a class="dir" href="https://www.google.com/maps/search/?api=1&query=4A+Seddon+St+Subiaco+WA+6008">Get Directions →</a>
+      </div>
+      <div class="loc-card">
+        <h3>MCQ Mirrabooka</h3>
+        <p>Shop MM4/43 Yirrigan Dr, Mirrabooka WA 6061</p>
+        <p>Mon–Fri 8am–8pm (Thu till 9pm) · Sat 8am–5pm · Sun 11am–5pm</p>
+        <span class="badge">Street Food on site</span><br>
+        <a class="dir" href="https://www.google.com/maps/search/?api=1&query=43+Yirrigan+Dr+Mirrabooka+WA+6061">Get Directions →</a>
+      </div>
+      <div class="loc-card">
+        <h3>MCQ Malaga</h3>
+        <p>688 Marshall Rd, Malaga WA 6090</p>
+        <p>8am – 7pm · Open 7 days</p>
+        <a class="dir" href="https://www.google.com/maps/search/?api=1&query=688+Marshall+Rd+Malaga+WA+6090">Get Directions →</a>
+      </div>
+      <div class="loc-card">
+        <h3>MCQ Armadale</h3>
+        <p>59/10 Orchard Ave, Armadale WA 6112</p>
+        <p>Mon–Fri 8am–7pm · Sat–Sun 11am–5pm</p>
+        <a class="dir" href="https://www.google.com/maps/search/?api=1&query=59/10+Orchard+Ave+Armadale+WA+6112">Get Directions →</a>
+      </div>
+      <div class="loc-card" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;background:var(--dark);color:#fff;">
+        <h3 style="color:#fff;">Need help finding us?</h3>
+        <p style="color:#ccc;">Call any store or our support line and we'll point you the right way.</p>
+        <a class="dir" href="tel:0892485623" style="color:var(--orange);">📞 08 9248 5623</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter">
+  <div class="wrap">
+    <h2>Get Our Weekly Specials</h2>
+    <p>Fresh deals straight to your inbox — no spam, just savings.</p>
+    <form class="nform" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks — you\'re subscribed!';">
+      <input type="email" placeholder="Your email address" required>
+      <select>
+        <option value="">Nearest store (optional)</option>
+        <option>Morley</option>
+        <option>Subiaco</option>
+        <option>Mirrabooka</option>
+        <option>Malaga</option>
+        <option>Armadale</option>
+      </select>
+      <button type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <img src="https://static.wixstatic.com/media/cbb9f1_7409b27735bd4415a9992e2ecbd07038~mv2.png/v1/fill/w_160,h_100,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/cbb9f1_7409b27735bd4415a9992e2ecbd07038~mv2.png" alt="MCQ Supermarket" style="margin-bottom:14px;">
+      <p style="max-width:280px;color:#999;">Fresh produce and Asian grocery, family-run in Western Australia since 1992.</p>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#viral">Viral Right Now</a></li>
+        <li><a href="#popular">Popular Products</a></li>
+        <li><a href="#promotions">Current Promotions</a></li>
+        <li><a href="#">Wholesale &amp; Bulk Inquiry</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#story">About Us</a></li>
+        <li><a href="#rewards">MCQ Rewards</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">News</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#locations">Store Locations</a></li>
+        <li><a href="tel:0892485623">08 9248 5623</a></li>
+        <li><a href="https://www.instagram.com/supermarketmcq/">Instagram</a></li>
+        <li><a href="https://www.facebook.com/supermarketmcq">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap bottom">
+    <span>© 2026 MCQ Supermarket. All rights reserved.</span>
+    <span>MCQ Rewards Terms &amp; Conditions · Privacy Policy</span>
+  </div>
+</footer>
+
+</body>
+</html>
