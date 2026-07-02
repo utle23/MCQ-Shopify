@@ -54,7 +54,9 @@
         "insta_1", "insta_2", "insta_3", "insta_4", "insta_5", "insta_6",
         "loc_1", "loc_2", "loc_3", "loc_4", "loc_5"
       ],
-      "settings": {}
+      "settings": {
+        "insta_profile": "https://www.instagram.com/supermarketmcq/"
+      }
     }
   },
   "order": ["mcq_marquee", "mcq_home"]
