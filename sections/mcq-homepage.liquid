@@ -14,6 +14,7 @@
 {%- endcomment -%}
 
 {{ 'mcq-custom.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mcq-animations.js' | asset_url }}" defer></script>
 
 {%- liquid
   assign s = section.settings
@@ -49,7 +50,28 @@
         {%- endif -%}
       </div>
     </div>
+    {%- if s.hero_scroll_hint != blank -%}
+      <div class="mcq-hero__scroll">{{ s.hero_scroll_hint }}<span></span></div>
+    {%- endif -%}
   </section>
+
+  {%- comment -%} ---------- FEATURES / TRUST STRIP ---------- {%- endcomment -%}
+  {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
+  {%- if feature_blocks.size > 0 -%}
+    <section class="mcq-section mcq-section--tight">
+      <div class="mcq-wrap">
+        <div class="mcq-features">
+          {%- for block in feature_blocks -%}
+            <div class="mcq-feature mcq-reveal" style="--mcq-d: {{ forloop.index0 | times: 90 }}ms;" {{ block.shopify_attributes }}>
+              <div class="mcq-feature__icon">{{ block.settings.emoji | default: '✅' }}</div>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
 
   {%- comment -%} ---------- STATS ---------- {%- endcomment -%}
   {%- assign stat_blocks = section.blocks | where: 'type', 'stat' -%}
@@ -71,7 +93,7 @@
     <section class="mcq-section mcq-section--tight">
       <div class="mcq-wrap">
         {%- if s.videos_heading != blank -%}
-          <div class="mcq-head">
+          <div class="mcq-head mcq-reveal">
             <span class="mcq-tag">{{ s.videos_eyebrow }}</span>
             <h2>{{ s.videos_heading }}</h2>
             {%- if s.videos_text != blank -%}<p>{{ s.videos_text }}</p>{%- endif -%}
@@ -130,12 +152,12 @@
   {%- if cat_blocks.size > 0 -%}
     <section class="mcq-section mcq-section--alt">
       <div class="mcq-wrap">
-        <div class="mcq-head">
+        <div class="mcq-head mcq-reveal">
           <span class="mcq-tag">{{ s.cat_eyebrow }}</span>
           <h2>{{ s.cat_heading }}</h2>
           {%- if s.cat_text != blank -%}<p>{{ s.cat_text }}</p>{%- endif -%}
         </div>
-        <div class="mcq-cat-grid">
+        <div class="mcq-cat-grid mcq-reveal">
           {%- for block in cat_blocks -%}
             {%- liquid
               assign cb = block.settings
@@ -197,14 +219,14 @@
     {%- if heading != blank -%}
       <section class="mcq-section{% if is_alt %} mcq-section--alt{% endif %}">
         <div class="mcq-wrap">
-          <div class="mcq-head">
+          <div class="mcq-head mcq-reveal">
             {%- if eyebrow != blank -%}<span class="mcq-tag"{% if band == 3 %} style="background:#FFE2E9;color:#c2185b;"{% endif %}>{{ eyebrow }}</span>{%- endif -%}
             <h2>{{ heading }}</h2>
             {%- if subtext != blank -%}<p>{{ subtext }}</p>{%- endif -%}
           </div>
 
           {%- if col != blank and col.products.size > 0 -%}
-            <div class="mcq-prod-grid">
+            <div class="mcq-prod-grid mcq-reveal">
               {%- for product in col.products limit: count -%}
                 <a class="mcq-card" href="{{ product.url }}">
                   <div class="mcq-card__media">
@@ -266,6 +288,42 @@
     </section>
   {%- endif -%}
 
+  {%- comment -%} ---------- TESTIMONIALS ---------- {%- endcomment -%}
+  {%- assign testi_blocks = section.blocks | where: 'type', 'testimonial' -%}
+  {%- if testi_blocks.size > 0 -%}
+    <section class="mcq-section mcq-testi">
+      <div class="mcq-wrap">
+        <div class="mcq-head mcq-reveal">
+          <span class="mcq-tag">{{ s.testi_eyebrow }}</span>
+          <h2>{{ s.testi_heading }}</h2>
+        </div>
+        <div class="mcq-reveal" data-mcq-testi data-autoplay="{{ s.testi_autoplay | default: 6000 }}">
+          <div class="mcq-testi__viewport">
+            <div class="mcq-testi__track">
+              {%- for block in testi_blocks -%}
+                <div class="mcq-testi__slide" {{ block.shopify_attributes }}>
+                  <div class="mcq-testi__card">
+                    {%- assign stars = block.settings.stars | default: 5 -%}
+                    <div class="mcq-testi__stars">{% for i in (1..stars) %}★{% endfor %}</div>
+                    <div class="mcq-testi__quote">{{ block.settings.quote }}</div>
+                    <div class="mcq-testi__who">{{ block.settings.name }}<span>{{ block.settings.location }}</span></div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+          {%- if testi_blocks.size > 1 -%}
+            <div class="mcq-testi__nav">
+              {%- for block in testi_blocks -%}
+                <button type="button" class="mcq-testi__dot{% if forloop.first %} is-active{% endif %}" aria-label="Go to review {{ forloop.index }}"></button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
   {%- comment -%} ---------- WHOLESALE CTA ---------- {%- endcomment -%}
   {%- if s.wholesale_heading != blank -%}
     <section class="mcq-section mcq-section--alt">
@@ -294,12 +352,12 @@
   {%- if reward_blocks.size > 0 -%}
     <section class="mcq-section mcq-rewards">
       <div class="mcq-wrap">
-        <div class="mcq-head">
+        <div class="mcq-head mcq-reveal">
           <span class="mcq-tag">{{ s.rewards_eyebrow }}</span>
           <h2>{{ s.rewards_heading }}</h2>
           {%- if s.rewards_text != blank -%}<p>{{ s.rewards_text }}</p>{%- endif -%}
         </div>
-        <div class="mcq-rewards__grid">
+        <div class="mcq-rewards__grid mcq-reveal">
           {%- for block in reward_blocks -%}
             <div class="mcq-reward" {{ block.shopify_attributes }}>
               <div class="mcq-reward__icon">{{ block.settings.emoji | default: '🎁' }}</div>
@@ -317,17 +375,47 @@
     </section>
   {%- endif -%}
 
+  {%- comment -%} ---------- INSTAGRAM GALLERY ---------- {%- endcomment -%}
+  {%- assign insta_blocks = section.blocks | where: 'type', 'insta' -%}
+  {%- if insta_blocks.size > 0 -%}
+    <section class="mcq-section">
+      <div class="mcq-wrap">
+        <div class="mcq-head mcq-reveal">
+          <span class="mcq-tag">{{ s.insta_eyebrow }}</span>
+          <h2>{{ s.insta_heading }}</h2>
+          {%- if s.insta_text != blank -%}<p>{{ s.insta_text }}</p>{%- endif -%}
+        </div>
+        <div class="mcq-insta__grid mcq-reveal">
+          {%- for block in insta_blocks -%}
+            <a class="mcq-insta__item" href="{{ block.settings.link | default: s.insta_profile | default: '#' }}" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy', alt: 'MCQ on Instagram' }}
+              {%- else -%}
+                <span class="mcq-insta__ph">📸</span>
+              {%- endif -%}
+            </a>
+          {%- endfor -%}
+        </div>
+        {%- if s.insta_profile != blank -%}
+          <div class="mcq-insta__cta">
+            <a href="{{ s.insta_profile }}" target="_blank" rel="noopener" class="mcq-btn mcq-btn--purple">Follow <span class="mcq-insta__handle">{{ s.insta_handle | default: '@supermarketmcq' }}</span></a>
+          </div>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+
   {%- comment -%} ---------- LOCATIONS ---------- {%- endcomment -%}
   {%- assign loc_blocks = section.blocks | where: 'type', 'location' -%}
   {%- if loc_blocks.size > 0 -%}
     <section class="mcq-section">
       <div class="mcq-wrap">
-        <div class="mcq-head">
+        <div class="mcq-head mcq-reveal">
           <span class="mcq-tag">{{ s.loc_eyebrow }}</span>
           <h2>{{ s.loc_heading }}</h2>
           {%- if s.loc_text != blank -%}<p>{{ s.loc_text }}</p>{%- endif -%}
         </div>
-        <div class="mcq-loc-grid">
+        <div class="mcq-loc-grid mcq-reveal">
           {%- for block in loc_blocks -%}
             {%- assign lb = block.settings -%}
             <div class="mcq-loc" {{ block.shopify_attributes }}>
@@ -419,6 +507,9 @@
     { "type": "url", "id": "hero_btn1_link", "label": "Button 1 link" },
     { "type": "text", "id": "hero_btn2_label", "label": "Button 2 label", "default": "Join MCQ Rewards" },
     { "type": "url", "id": "hero_btn2_link", "label": "Button 2 link" },
+    { "type": "text", "id": "hero_scroll_hint", "label": "Scroll hint text", "default": "Scroll" },
+
+    { "type": "header", "content": "1b · Why shop with MCQ (add 'Feature' blocks)" },
 
     { "type": "header", "content": "2 · Video band" },
     { "type": "checkbox", "id": "show_videos", "label": "Show video band", "default": true },
@@ -471,6 +562,11 @@
     { "type": "text", "id": "street_note", "label": "Locations note", "default": "Available at MCQ Morley · MCQ Subiaco · MCQ Mirrabooka" },
     { "type": "image_picker", "id": "street_image", "label": "Image" },
 
+    { "type": "header", "content": "7b · Testimonials (add 'Review' blocks)" },
+    { "type": "text", "id": "testi_eyebrow", "label": "Eyebrow", "default": "Loved by locals" },
+    { "type": "text", "id": "testi_heading", "label": "Heading", "default": "What our customers say" },
+    { "type": "range", "id": "testi_autoplay", "label": "Autoplay (ms, 0 = off)", "min": 0, "max": 10000, "step": 1000, "default": 6000, "unit": "ms" },
+
     { "type": "header", "content": "8 · Wholesale call-to-action" },
     { "type": "text", "id": "wholesale_eyebrow", "label": "Eyebrow", "default": "For business" },
     { "type": "text", "id": "wholesale_heading", "label": "Heading", "default": "Wholesale & bulk supply for WA businesses" },
@@ -485,6 +581,13 @@
     { "type": "text", "id": "rewards_text", "label": "Text", "default": "Earn every time you shop — no paper cards, just your phone." },
     { "type": "text", "id": "rewards_btn_label", "label": "Button label", "default": "Join MCQ Rewards — It's Free" },
     { "type": "url", "id": "rewards_btn_link", "label": "Button link" },
+
+    { "type": "header", "content": "9b · Instagram gallery (add 'Instagram post' blocks)" },
+    { "type": "text", "id": "insta_eyebrow", "label": "Eyebrow", "default": "@supermarketmcq" },
+    { "type": "text", "id": "insta_heading", "label": "Heading", "default": "Follow us on Instagram" },
+    { "type": "text", "id": "insta_text", "label": "Text", "default": "Fresh finds, new arrivals and street food — tag us to be featured." },
+    { "type": "url", "id": "insta_profile", "label": "Instagram profile URL", "default": "https://www.instagram.com/supermarketmcq/" },
+    { "type": "text", "id": "insta_handle", "label": "Handle", "default": "@supermarketmcq" },
 
     { "type": "header", "content": "10 · Locations heading" },
     { "type": "text", "id": "loc_eyebrow", "label": "Eyebrow", "default": "Find us" },
@@ -539,12 +642,43 @@
         { "type": "text", "id": "badge", "label": "Badge (optional)" },
         { "type": "url", "id": "map_link", "label": "Google Maps link" }
       ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "text", "id": "emoji", "label": "Icon (emoji)", "default": "🥬" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Fresh every day" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Produce delivered from WA farms each morning." }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "stars", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "Best Asian grocery in Perth — always fresh and great value!" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Happy Customer" },
+        { "type": "text", "id": "location", "label": "Location", "default": "Morley, WA" }
+      ]
+    },
+    {
+      "type": "insta",
+      "name": "Instagram post",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "link", "label": "Post link (optional)" }
+      ]
     }
   ],
   "presets": [
     {
       "name": "MCQ Homepage",
       "blocks": [
+        { "type": "feature", "settings": { "emoji": "🥬", "title": "Fresh every day", "text": "Produce delivered from WA farms each morning." } },
+        { "type": "feature", "settings": { "emoji": "🌏", "title": "A world of flavour", "text": "Thousands of international grocery lines." } },
+        { "type": "feature", "settings": { "emoji": "💰", "title": "Unbeatable value", "text": "Real savings passed on to you, every day." } },
+        { "type": "feature", "settings": { "emoji": "🍜", "title": "Street food on site", "text": "Authentic Vietnamese food, made fresh in-store." } },
         { "type": "stat", "settings": { "value": "5", "label": "Perth locations" } },
         { "type": "stat", "settings": { "value": "1000s", "label": "Fresh & international lines" } },
         { "type": "stat", "settings": { "value": "7", "label": "Days a week" } },
@@ -556,6 +690,15 @@
         { "type": "reward", "settings": { "emoji": "🎟️", "title": "Earn Vouchers", "text": "Get 1 point for every $1 spent, and a $10 reward every 1,000 points." } },
         { "type": "reward", "settings": { "emoji": "⚡", "title": "Boosted Offers", "text": "Collect boosted points on the items you love to shop for most." } },
         { "type": "reward", "settings": { "emoji": "🎁", "title": "Member Bonus", "text": "Look out for Member Bonus products and earn up to $20 back on a single item." } },
+        { "type": "testimonial", "settings": { "stars": 5, "quote": "Best Asian grocery in Perth — always fresh and unbeatable prices.", "name": "Linh N.", "location": "Morley, WA" } },
+        { "type": "testimonial", "settings": { "stars": 5, "quote": "The street food is the real deal and the produce is always fresh. My weekly go-to.", "name": "James T.", "location": "Subiaco, WA" } },
+        { "type": "testimonial", "settings": { "stars": 5, "quote": "Huge range of imported goods you can't find anywhere else in WA. Love it!", "name": "Mei L.", "location": "Mirrabooka, WA" } },
+        { "type": "insta", "settings": {} },
+        { "type": "insta", "settings": {} },
+        { "type": "insta", "settings": {} },
+        { "type": "insta", "settings": {} },
+        { "type": "insta", "settings": {} },
+        { "type": "insta", "settings": {} },
         { "type": "location", "settings": { "name": "MCQ Malaga", "address": "688 Marshall Rd, Malaga WA 6090", "hours": "8am – 7pm · Open 7 days", "badge": "Central branch", "map_link": "https://www.google.com/maps/search/?api=1&query=688+Marshall+Rd+Malaga+WA+6090" } },
         { "type": "location", "settings": { "name": "MCQ Morley — Coventry Village", "address": "Coventry Village, Morley WA 6062", "hours": "8am – 8pm · Open 7 days", "badge": "Street Food on site", "map_link": "https://www.google.com/maps/search/?api=1&query=Coventry+Village+Morley+WA+6062" } },
         { "type": "location", "settings": { "name": "MCQ Mirrabooka", "address": "Mirrabooka WA 6061", "hours": "Open 7 days", "badge": "Street Food on site", "map_link": "https://www.google.com/maps/search/?api=1&query=Mirrabooka+WA+6061" } },

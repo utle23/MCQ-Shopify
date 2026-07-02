@@ -12,7 +12,17 @@
       },
       "block_order": ["value_1", "value_2", "value_3", "ms_1", "ms_2", "ms_3"],
       "settings": {}
+    },
+    "mcq_about_banner": {
+      "type": "mcq-cta-banner",
+      "settings": {
+        "eyebrow": "Come visit us",
+        "heading": "Unbeatable value, fresh every day",
+        "text": "Five stores across Perth, open 7 days at most locations. We can't wait to welcome you in-store.",
+        "btn1_label": "Find a Store",
+        "btn2_label": "Wholesale Inquiry"
+      }
     }
   },
-  "order": ["mcq_about"]
+  "order": ["mcq_about", "mcq_about_banner"]
 }

@@ -1,0 +1,69 @@
+{%- comment -%}
+  ============================================================
+  MCQ Supermarket — Promo marquee
+  A slim, infinitely-scrolling promo bar. Drop it at the very
+  top of any page. Messages are blocks. Pure CSS animation
+  (pauses on hover); no JavaScript required.
+  ============================================================
+{%- endcomment -%}
+
+{{ 'mcq-custom.css' | asset_url | stylesheet_tag }}
+
+{%- liquid assign s = section.settings -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div
+    class="mcq mcq-marquee"
+    style="--mcq-green:{{ s.brand_green }};--mcq-orange:{{ s.brand_orange }};--mcq-purple:{{ s.brand_purple }};--mcq-speed:{{ s.speed }}s;"
+  >
+    <div class="mcq-marquee__viewport" aria-hidden="false">
+      {%- comment -%} Rendered twice so the loop is seamless {%- endcomment -%}
+      {%- for repeat in (1..2) -%}
+        <div class="mcq-marquee__track"{% if repeat == 2 %} aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <span class="mcq-marquee__item" {{ block.shopify_attributes }}>
+              {%- if block.settings.emoji != blank -%}{{ block.settings.emoji }} {% endif -%}
+              {{ block.settings.text }}
+            </span>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "MCQ Promo Marquee",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Brand colours" },
+    { "type": "color", "id": "brand_green", "label": "Green", "default": "#99C547" },
+    { "type": "color", "id": "brand_orange", "label": "Orange", "default": "#F7A933" },
+    { "type": "color", "id": "brand_purple", "label": "Purple", "default": "#8C3493" },
+    { "type": "range", "id": "speed", "label": "Scroll duration", "min": 10, "max": 60, "step": 2, "default": 32, "unit": "s" }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        { "type": "text", "id": "emoji", "label": "Emoji", "default": "🚚" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Free parking at all 5 WA stores" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MCQ Promo Marquee",
+      "blocks": [
+        { "type": "message", "settings": { "emoji": "🥬", "text": "Fresh produce delivered daily" } },
+        { "type": "message", "settings": { "emoji": "🌏", "text": "1000s of international grocery lines" } },
+        { "type": "message", "settings": { "emoji": "🍜", "text": "Vietnamese street food made in-store" } },
+        { "type": "message", "settings": { "emoji": "🎟️", "text": "Earn points with MCQ Rewards" } },
+        { "type": "message", "settings": { "emoji": "📍", "text": "5 locations across Perth, WA" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

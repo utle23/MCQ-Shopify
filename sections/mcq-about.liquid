@@ -7,6 +7,7 @@
 {%- endcomment -%}
 
 {{ 'mcq-custom.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mcq-animations.js' | asset_url }}" defer></script>
 
 {%- liquid assign s = section.settings -%}
 
@@ -57,12 +58,12 @@
   {%- if value_blocks.size > 0 -%}
     <section class="mcq-section mcq-section--alt">
       <div class="mcq-wrap">
-        <div class="mcq-head">
+        <div class="mcq-head mcq-reveal">
           <span class="mcq-tag">{{ s.values_eyebrow }}</span>
           <h2>{{ s.values_heading }}</h2>
           {%- if s.values_text != blank -%}<p>{{ s.values_text }}</p>{%- endif -%}
         </div>
-        <div class="mcq-values">
+        <div class="mcq-values mcq-reveal">
           {%- for block in value_blocks -%}
             <div class="mcq-value" {{ block.shopify_attributes }}>
               <div class="mcq-value__icon">{{ block.settings.emoji | default: '✅' }}</div>
@@ -80,11 +81,11 @@
   {%- if milestone_blocks.size > 0 -%}
     <section class="mcq-section">
       <div class="mcq-wrap">
-        <div class="mcq-head">
+        <div class="mcq-head mcq-reveal">
           <span class="mcq-tag">{{ s.timeline_eyebrow }}</span>
           <h2>{{ s.timeline_heading }}</h2>
         </div>
-        <div class="mcq-timeline">
+        <div class="mcq-timeline mcq-reveal">
           {%- for block in milestone_blocks -%}
             <div class="mcq-milestone" {{ block.shopify_attributes }}>
               <div class="mcq-year">{{ block.settings.year }}</div>

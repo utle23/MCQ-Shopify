@@ -481,4 +481,165 @@
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .mcq *, .mcq *::before, .mcq *::after { transition: none !important; animation: none !important; }
+  .mcq-reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   PREMIUM LAYER — animations, marquee, features, testimonials,
+   Instagram, and polish. Added on top of the base kit above.
+   ============================================================ */
+
+/* ---------- Scroll reveal ---------- */
+.mcq-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .7s cubic-bezier(.2, .7, .2, 1), transform .7s cubic-bezier(.2, .7, .2, 1);
+  transition-delay: var(--mcq-d, 0ms);
+  will-change: opacity, transform;
+}
+.mcq-reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- Gradient text ---------- */
+.mcq-gradient-text {
+  background: linear-gradient(100deg, var(--mcq-orange), var(--mcq-purple) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ---------- Button shine ---------- */
+.mcq-btn { position: relative; overflow: hidden; }
+.mcq-btn::before {
+  content: "";
+  position: absolute; top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .35), transparent);
+  transform: skewX(-20deg);
+  transition: left .6s ease;
+}
+.mcq-btn:hover::before { left: 140%; }
+
+/* ---------- Hero polish ---------- */
+.mcq-hero__media img,
+.mcq-hero__media video { animation: mcq-kenburns 18s ease-out both; }
+@keyframes mcq-kenburns {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+.mcq-hero__scroll {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+  z-index: 3; color: #fff; font-size: 12px; letter-spacing: 1px;
+  text-transform: uppercase; opacity: .85; text-align: center;
+}
+.mcq-hero__scroll span {
+  display: block; width: 22px; height: 34px; margin: 8px auto 0;
+  border: 2px solid rgba(255, 255, 255, .7); border-radius: 14px; position: relative;
+}
+.mcq-hero__scroll span::after {
+  content: ""; position: absolute; left: 50%; top: 7px; width: 4px; height: 7px;
+  background: #fff; border-radius: 2px; transform: translateX(-50%);
+  animation: mcq-scrolldot 1.6s ease-in-out infinite;
+}
+@keyframes mcq-scrolldot { 0%, 100% { opacity: 0; top: 6px; } 50% { opacity: 1; top: 14px; } }
+
+/* ---------- Promo marquee ---------- */
+.mcq-marquee {
+  background: linear-gradient(90deg, var(--mcq-purple), var(--mcq-orange));
+  color: #fff; overflow: hidden; padding: 11px 0;
+}
+.mcq-marquee__viewport { display: flex; overflow: hidden; user-select: none; }
+.mcq-marquee__track {
+  display: flex; flex-shrink: 0; gap: 0; white-space: nowrap;
+  animation: mcq-marquee var(--mcq-speed, 32s) linear infinite;
+}
+.mcq-marquee:hover .mcq-marquee__track { animation-play-state: paused; }
+.mcq-marquee__item {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-weight: 700; font-size: 13.5px; letter-spacing: .4px; padding: 0 26px;
+}
+.mcq-marquee__item::after { content: "✦"; opacity: .7; margin-left: 26px; }
+@keyframes mcq-marquee { to { transform: translateX(-100%); } }
+
+/* ---------- Features / trust strip ---------- */
+.mcq-features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.mcq-feature {
+  background: #fff; border: 1px solid #f0efe9; border-radius: var(--mcq-radius);
+  padding: 30px 24px; text-align: center; box-shadow: var(--mcq-shadow);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.mcq-feature:hover { transform: translateY(-6px); box-shadow: var(--mcq-shadow-lg); }
+.mcq-feature__icon {
+  width: 66px; height: 66px; margin: 0 auto 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 30px;
+  background: var(--mcq-lightgreen);
+}
+.mcq-feature h3 { font-size: 16px; margin-bottom: 8px; }
+.mcq-feature p { font-size: 13.5px; color: var(--mcq-grey); }
+
+/* ---------- Testimonials ---------- */
+.mcq-testi { background: #FAF8F2; }
+.mcq-testi__viewport { overflow: hidden; }
+.mcq-testi__track { display: flex; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+.mcq-testi__slide { min-width: 100%; padding: 4px; }
+.mcq-testi__card {
+  background: #fff; border: 1px solid #eee; border-radius: var(--mcq-radius);
+  padding: 40px 44px; box-shadow: var(--mcq-shadow); max-width: 760px; margin: 0 auto;
+  text-align: center;
+}
+.mcq-testi__stars { color: var(--mcq-orange); font-size: 20px; letter-spacing: 3px; margin-bottom: 16px; }
+.mcq-testi__quote { font-size: clamp(17px, 2.4vw, 22px); line-height: 1.5; font-weight: 500; }
+.mcq-testi__quote::before { content: "\201C"; }
+.mcq-testi__quote::after { content: "\201D"; }
+.mcq-testi__who { margin-top: 20px; font-weight: 700; font-size: 14.5px; }
+.mcq-testi__who span { display: block; color: var(--mcq-grey); font-weight: 500; font-size: 13px; }
+.mcq-testi__nav { display: flex; justify-content: center; gap: 10px; margin-top: 26px; }
+.mcq-testi__dot {
+  width: 10px; height: 10px; border-radius: 50%; border: none; cursor: pointer;
+  background: #d6d0c2; transition: transform .2s ease, background .2s ease; padding: 0;
+}
+.mcq-testi__dot.is-active { background: var(--mcq-purple); transform: scale(1.3); }
+
+/* ---------- Instagram gallery ---------- */
+.mcq-insta__grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.mcq-insta__item {
+  position: relative; aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden;
+  background: var(--mcq-lightgreen); display: block;
+}
+.mcq-insta__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.mcq-insta__item:hover img { transform: scale(1.08); }
+.mcq-insta__item::after {
+  content: "📷";
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(140, 52, 147, .55); color: #fff; font-size: 26px;
+  opacity: 0; transition: opacity .25s ease;
+}
+.mcq-insta__item:hover::after { opacity: 1; }
+.mcq-insta__ph { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 34px; }
+.mcq-insta__cta { text-align: center; margin-top: 30px; }
+.mcq-insta__handle { font-weight: 800; color: var(--mcq-purple); }
+
+/* ---------- Full-width CTA banner ---------- */
+.mcq-banner { position: relative; color: #fff; overflow: hidden; }
+.mcq-banner__media, .mcq-banner__media img, .mcq-banner__media svg {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.mcq-banner__overlay { position: absolute; inset: 0; background: linear-gradient(120deg, rgba(26, 26, 26, .78), rgba(140, 52, 147, .45)); }
+.mcq-banner__inner { position: relative; z-index: 2; text-align: center; padding: 92px 0; }
+.mcq-banner h2 { font-size: clamp(28px, 4.5vw, 44px); margin-bottom: 14px; }
+.mcq-banner p { font-size: 17px; opacity: .95; max-width: 620px; margin: 0 auto 28px; }
+
+/* ---------- Section eyebrow accent ---------- */
+.mcq-head .mcq-tag { position: relative; }
+
+/* ---------- Responsive additions ---------- */
+@media (max-width: 1000px) {
+  .mcq-features { grid-template-columns: repeat(2, 1fr); }
+  .mcq-insta__grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 560px) {
+  .mcq-features { grid-template-columns: 1fr 1fr; }
+  .mcq-insta__grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .mcq-testi__card { padding: 30px 24px; }
+  .mcq-banner__inner { padding: 68px 0; }
 }

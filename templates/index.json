@@ -1,8 +1,24 @@
 {
   "sections": {
+    "mcq_marquee": {
+      "type": "mcq-marquee",
+      "blocks": {
+        "m1": { "type": "message", "settings": { "emoji": "🥬", "text": "Fresh produce delivered daily" } },
+        "m2": { "type": "message", "settings": { "emoji": "🌏", "text": "1000s of international grocery lines" } },
+        "m3": { "type": "message", "settings": { "emoji": "🍜", "text": "Vietnamese street food made in-store" } },
+        "m4": { "type": "message", "settings": { "emoji": "🎟️", "text": "Earn points with MCQ Rewards" } },
+        "m5": { "type": "message", "settings": { "emoji": "📍", "text": "5 locations across Perth, WA" } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4", "m5"],
+      "settings": {}
+    },
     "mcq_home": {
       "type": "mcq-homepage",
       "blocks": {
+        "feat_1": { "type": "feature", "settings": { "emoji": "🥬", "title": "Fresh every day", "text": "Produce delivered from WA farms each morning." } },
+        "feat_2": { "type": "feature", "settings": { "emoji": "🌏", "title": "A world of flavour", "text": "Thousands of international grocery lines." } },
+        "feat_3": { "type": "feature", "settings": { "emoji": "💰", "title": "Unbeatable value", "text": "Real savings passed on to you, every day." } },
+        "feat_4": { "type": "feature", "settings": { "emoji": "🍜", "title": "Street food on site", "text": "Authentic Vietnamese food, made fresh in-store." } },
         "stat_1": { "type": "stat", "settings": { "value": "5", "label": "Perth locations" } },
         "stat_2": { "type": "stat", "settings": { "value": "1000s", "label": "Fresh & international lines" } },
         "stat_3": { "type": "stat", "settings": { "value": "7", "label": "Days a week" } },
@@ -14,6 +30,15 @@
         "reward_1": { "type": "reward", "settings": { "emoji": "🎟️", "title": "Earn Vouchers", "text": "Get 1 point for every $1 spent, and a $10 reward every 1,000 points." } },
         "reward_2": { "type": "reward", "settings": { "emoji": "⚡", "title": "Boosted Offers", "text": "Collect boosted points on the items you love to shop for most." } },
         "reward_3": { "type": "reward", "settings": { "emoji": "🎁", "title": "Member Bonus", "text": "Look out for Member Bonus products and earn up to $20 back on a single item." } },
+        "testi_1": { "type": "testimonial", "settings": { "stars": 5, "quote": "Best Asian grocery in Perth — always fresh and unbeatable prices.", "name": "Linh N.", "location": "Morley, WA" } },
+        "testi_2": { "type": "testimonial", "settings": { "stars": 5, "quote": "The street food is the real deal and the produce is always fresh. My weekly go-to.", "name": "James T.", "location": "Subiaco, WA" } },
+        "testi_3": { "type": "testimonial", "settings": { "stars": 5, "quote": "Huge range of imported goods you can't find anywhere else in WA. Love it!", "name": "Mei L.", "location": "Mirrabooka, WA" } },
+        "insta_1": { "type": "insta", "settings": {} },
+        "insta_2": { "type": "insta", "settings": {} },
+        "insta_3": { "type": "insta", "settings": {} },
+        "insta_4": { "type": "insta", "settings": {} },
+        "insta_5": { "type": "insta", "settings": {} },
+        "insta_6": { "type": "insta", "settings": {} },
         "loc_1": { "type": "location", "settings": { "name": "MCQ Malaga", "address": "688 Marshall Rd, Malaga WA 6090", "hours": "8am – 7pm · Open 7 days", "badge": "Central branch", "map_link": "https://www.google.com/maps/search/?api=1&query=688+Marshall+Rd+Malaga+WA+6090" } },
         "loc_2": { "type": "location", "settings": { "name": "MCQ Morley — Coventry Village", "address": "Coventry Village, Morley WA 6062", "hours": "8am – 8pm · Open 7 days", "badge": "Street Food on site", "map_link": "https://www.google.com/maps/search/?api=1&query=Coventry+Village+Morley+WA+6062" } },
         "loc_3": { "type": "location", "settings": { "name": "MCQ Mirrabooka", "address": "Yirrigan Dr, Mirrabooka WA 6061", "hours": "Open 7 days", "badge": "Street Food on site", "map_link": "https://www.google.com/maps/search/?api=1&query=Mirrabooka+WA+6061" } },
@@ -21,13 +46,16 @@
         "loc_5": { "type": "location", "settings": { "name": "MCQ Armadale", "address": "Armadale WA 6112", "hours": "Mon–Fri 8am–7pm · Sat–Sun 11am–5pm", "map_link": "https://www.google.com/maps/search/?api=1&query=Armadale+WA+6112" } }
       },
       "block_order": [
+        "feat_1", "feat_2", "feat_3", "feat_4",
         "stat_1", "stat_2", "stat_3", "stat_4",
         "cat_1", "cat_2", "cat_3", "cat_4",
         "reward_1", "reward_2", "reward_3",
+        "testi_1", "testi_2", "testi_3",
+        "insta_1", "insta_2", "insta_3", "insta_4", "insta_5", "insta_6",
         "loc_1", "loc_2", "loc_3", "loc_4", "loc_5"
       ],
       "settings": {}
     }
   },
-  "order": ["mcq_home"]
+  "order": ["mcq_marquee", "mcq_home"]
 }

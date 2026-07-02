@@ -9,6 +9,7 @@
 {%- endcomment -%}
 
 {{ 'mcq-custom.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mcq-animations.js' | asset_url }}" defer></script>
 
 {%- liquid assign s = section.settings -%}
 
@@ -20,7 +21,7 @@
     <div class="mcq-wrap mcq-whole">
 
       {%- comment -%} ---------- LEFT: pitch ---------- {%- endcomment -%}
-      <div class="mcq-whole__aside">
+      <div class="mcq-whole__aside mcq-reveal">
         <span class="mcq-tag">{{ s.eyebrow }}</span>
         <h2>{{ s.heading }}</h2>
         {%- if s.intro != blank -%}<p>{{ s.intro }}</p>{%- endif -%}

@@ -9,6 +9,7 @@
 {%- endcomment -%}
 
 {{ 'mcq-custom.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mcq-animations.js' | asset_url }}" defer></script>
 
 {%- liquid
   assign s = section.settings
@@ -34,7 +35,7 @@
 >
   <section class="mcq-section">
     <div class="mcq-wrap">
-      <div class="mcq-head">
+      <div class="mcq-head mcq-reveal">
         <span class="mcq-tag">{{ s.eyebrow }}</span>
         <h2>{{ s.heading }}</h2>
         {%- if s.intro != blank -%}<p>{{ s.intro }}</p>{%- endif -%}
@@ -43,7 +44,7 @@
       <div class="mcq-faq">
         {%- for cat in cats -%}
           {%- if cat != blank -%}
-            <div class="mcq-faq__cat">
+            <div class="mcq-faq__cat mcq-reveal">
               <h3>{{ cat }}</h3>
               {%- for block in faq_blocks -%}
                 {%- assign bcat = block.settings.category | default: 'General' -%}
